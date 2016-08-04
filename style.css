@@ -1,0 +1,147 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+
+input[type="date"]::before { content: attr(data-placeholder); width: 100%; }
+input[type="date"]:focus::before, input[type="date"]:valid::before { display: none; }
+
+.intro {
+	background: url(images/hotel-1345074.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	/*min-height: 460px; */
+	min-height: 600px;
+}
+
+.header-top {
+	background: silver;
+
+	/*#A3A9B8*/
+	/*5F6C88*/
+}
+
+.navigation {
+	float: right;
+}
+
+.navigation li {
+	display: inline-block;
+}
+
+.navigation a {
+	margin-left: 20px;
+}
+
+.util-container {
+	width: 100%;
+	background: #b3b3b3;
+}
+
+
+.main-form-div {
+	padding-top:20px;
+	padding-right:0px;
+	padding-bottom:20px;
+	padding-left:0px;
+}
+
+/*
+.full-width {
+	width: 100%; !important
+}
+*/
+
+
+.city-image {
+
+	height: 300px;
+	width: 100%;
+}
+
+.icon-right-open-big {
+	float: right;
+}
+
+footer {
+	background-color: silver;
+	min-height: 100px;
+}
+
+/* Search.html */
+
+.intro-search {
+	background: url(images/resort-918952_1920.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	/*min-height: 460px; */
+	min-height: 600px;
+}
+
+
+
+#myCarousel {
+	margin:0 ;
+}
+
+
+
+.rezervation-steps {
+	border:1px solid gray;
+	padding: 5px 5px 5px 5px;
+	text-align: center;
+}
+
+
+
+/*.main-form-column {
+	background-color:silver;
+	border: 1px solid gray;
+	margin-top:20px;
+}
+
+.main-form {
+	
+	
+}
+
+.main-form-box input {
+	width: 100%;
+	outline: none;
+	border:none;
+}
+
+.main-form-box {
+	border: 1px solid gray;
+	width: 19%;
+	float: left;
+	padding: 10px 10px 10px 10px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	margin-left: 1%;
+	background-color: white;
+}
+
+.main-form-box-last {
+	border: 1px solid gray;
+	width: 18%;
+	float: left;
+	padding: 10px 10px 10px 10px;
+	margin-top: 10px;
+	margin-right: 1%;
+	margin-left: 1%;
+	margin-bottom: 10px;
+	background-color: #362C44;
+	text-align: center;
+}
+*/
+
+
+
