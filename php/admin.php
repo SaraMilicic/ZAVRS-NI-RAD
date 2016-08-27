@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once 'db_conn.php';
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,15 @@
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../fontello-21cce32f/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+  
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example').DataTable();
+        } );
+    </script>
 </head>
 <body>
 	<!-- Header and navigation -->
@@ -71,24 +81,169 @@
         <div class="row">
             <div class="col-md-12"><h1>Uredi</h1>
             </div>
+        </div>
     <!-- style="display:none;" -->
-            <div class="col-md-12">
-                <h2 onclick="show('state')">Država</h2>
-                <div id="state" >
-                    blalablal
-                    <?php
-                        require_once 'idiorm.php';
-                        ORM::configure('mysql:host=localhost:8889;dbname=Booking;charset=utf8');
-                        ORM::configure('username','root');
-                        ORM::configure('password','root');
+        <div class="row">
+            <div class="col-md-12" onclick="show('state')" >
+                <h2 style="background:silver;">Država<i class="icon-right-open-big"></i></h2>
+            <div>
 
-                        $results = ORM::for_table('state')->find_many();
-                        foreach ($results as $result) {
-                            echo $result->country_code . ' ' . $result->name;
+            <div class="col-md-12" id="state" >
+               
+                    <?php
+                        $states = ORM::for_table('state')->find_many();
+                        foreach ($states as $state) {
+                            echo $state->country_code . ' ' . $state->name;
                         }
                     ?>
-                </div>
+                    <h3>Dodaj</h3>
+                    <form class="form-inline" role="form" method="POST" action="">
+                        Pozivni broj: <input type="text" /><br><br>
+                        Ime: <input type="text" />
+                        <input class="btn btn-info" type="submit" value="Dodaj">
+
+                    </form>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12"  >
+                <h2>Grad</h2>
+            <div>
+            <div class="col-md-12" onclick="toggle_visibility('city')">
+                <h3 style="background:silver;">Ispis svih gradova:<i class="icon-right-open-big"></i></h3>
+            </div>
+            <div class="col-md-12" id="city" style="display:none;">
+                    <?php
+                        $cities = ORM::for_table('city')->find_many();
+                        foreach ($cities as $city) {
+                            echo $city->postal_code . '<br>'. 
+                            $city->name . '<br>'. 
+                            $city->about . '<br>'. 
+                            $city->image . '<br>'. 
+                            $city->id_state . '<br>';
+                        }
+                    ?>
+            </div>
+            <div class="col-md-12">
+                    <h3  style="background:silver;">Dodaj</h3>
+                    <form class="form-inline" role="form" method="POST" action="">
+                        Poštanski broj: <input type="text" /><br><br>
+                        Ime: <input type="text" required="required"/><br><br>
+                        Opis: <input type="text" required="required"/><br><br>
+                        Slika: <input type="text" required="required"/><br><br>
+                        Id države: <input type="text" />
+
+
+
+
+
+                        Država: <select class="form-control" id="state-selection" required="required">
+                            <?php
+                                $states = ORM::for_table('state')->find_many();
+                                foreach($states as $state) {
+                                    echo '<option value=' . $state->name . '><option/>';
+                                
+
+                                }
+                            ?>
+                       
+                    </select>
+                    </form>
+            </div>
+
+            
+            <div class="row">
+            <div class="col-md-12" onclick="show('hotel')" >
+                <h2 style="background:silver;">Hotel<i class="icon-right-open-big"></i></h2>
+            <div>
+
+            <div class="col-md-12" id="state" >
+               
+                    <?php
+                        $hotels = ORM::for_table('hotel')->find_many();
+                        foreach ($hotels as $hotel) {
+                            echo $hotel->name . '<br>'. 
+                            $hotel->address . '<br>'. 
+                            $hotel->postal_code . '<br>'. 
+                            $hotel->category . ' zvjezdica ' . '<br>'. 
+                            $hotel->about . '<br>'.
+                            $hotel->image . '<br>';
+                            
+                        }
+                    ?>
+                    <h3>Dodaj</h3>
+                    <form class="form-inline" role="form" method="POST" action="">
+                        Pozivni broj: <input type="text" /><br><br>
+                        Ime: <input type="text" />
+                        <input class="btn btn-info" type="submit" value="Dodaj">
+
+                    </form>
+            </div>
+
+
+
+            <div class="col-md-12" id="state" >
+               
+                    <?php
+                        $hotels = ORM::for_table('hotel')->find_many();
+                        foreach ($hotels as $hotel) {
+                            echo $hotel->name . '<br>'. 
+                            $hotel->address . '<br>'. 
+                            $hotel->postal_code . '<br>'. 
+                            $hotel->category . ' zvjezdica ' . '<br>'. 
+                            $hotel->about . '<br>'.
+                            $hotel->image . '<br>';
+                            
+                        }
+                    ?>
+                    <h3>Dodaj</h3>
+                    <form class="form-inline" role="form" method="POST" action="">
+                        Pozivni broj: <input type="text" /><br><br>
+                        Ime: <input type="text" />
+                        <input class="btn btn-info" type="submit" value="Dodaj">
+
+                    </form>
+            </div>
+
+
+
+
+            <table id="example" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Postal_code</th>
+                        <th>Category</th>
+                        <th>About</th>
+                        <th>Image</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                    <tr>
+                        <?php
+                            $hotels = ORM::for_table('hotel')->find_many();
+                            foreach ($hotels as $hotel) {
+                                echo 
+                                '<th>'.$hotel->name.'</th><br>'.
+                                '<th>'.$hotel->address.'</th><br>'. 
+                                '<th>'.$hotel->postal_code.'</th><br>'. 
+                                '<th>'.$hotel->category.'</th><br>'. 
+                                '<th>'.$hotel->about.'</th><br>'. 
+                                '<th>'.$hotel->image.'</th><br>';                             
+                            }
+                        ?>
+                    </tr>
+                </tbody>
+                </tfoot>
+            </table>
+        </div>
+
+
+
+
+
         </div>
     </div>
 
@@ -97,7 +252,7 @@
 
   
 	
-	<footer style="background-color: silver; min-height:100px; margin-top:60px;">
+	<!--<footer style="background-color: silver; min-height:100px; margin-top:60px;">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-3 col-md-3"></div>
@@ -106,15 +261,25 @@
                 <div class="col-xs-3 col-md-3"></div>
             </div>
         </div>
-    </footer>
+    </footer> -->
 
     <script>
-      function show(target){
-        document.getElementById(target).style.display = 'block';
-      }
-      function hide(target){
-        document.getElementById(target).style.display = 'none';
-      }
+        function show(target){
+            document.getElementById(target).style.display = 'block';
+        }
+        function hide(target){
+            document.getElementById(target).style.display = 'none';
+        }
+
+        function toggle_visibility(id) {
+        var e = document.getElementById(id);
+        if(e.style.display == 'block')
+            e.style.display = 'none';
+        else
+            e.style.display = 'block';
+        }
     </script>
+
+    
 </body>
 </html>
