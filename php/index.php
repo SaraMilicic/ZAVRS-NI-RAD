@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../fontello-fb2fbc05/css/fontello.css">
-    <link rel="stylesheet" href="../fontello-c66a0df8/css/fontello.css">
+    <link rel="stylesheet" href="../fontello-21cce32f/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
@@ -26,7 +25,7 @@
                     </nav>
                 </div>
                 <div class="col-md-6 col-xs-12">
-                    <a href="index.html">BookCroatia</a>
+                    <a href="index.php">BookCroatia</a>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
