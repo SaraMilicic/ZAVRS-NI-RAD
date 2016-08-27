@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="../fontello-fb2fbc05/css/fontello.css">
+    <link rel="stylesheet" href="../fontello-c66a0df8/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
@@ -81,6 +82,7 @@
     <section class="fluid-container intro" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-tekst">
+                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')"></i>
                 <form class="form-signin" role="form" method="post">
                     <h3>Prijava</h3><br>
                     <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>

@@ -19,6 +19,27 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	min-height: 600px;
 }
 
+.intro-tekst {
+	font-size: 1.5em;
+	width: 100%;
+	background-color: rgba(51, 48, 45, 0.9);
+	opacity: 50%;
+	color: #FFFAF0;
+	overflow: hidden;
+	padding: 20px;
+	margin: 0 auto;
+	min-height: 230px;
+	
+	float:right;
+
+}
+
+.cancel-icon {
+	margin:0 auto;
+	float:right;
+	cursor:pointer;
+}
+
 .header-top {
 	background: silver;
 
@@ -142,6 +163,28 @@ footer {
 	text-align: center;
 }
 */
+
+.hotels-by-city-intro {
+	background: url(images/zagreb1.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	/*min-height: 460px; */
+	min-height: 400px;
+}
+
+
+.intro1 {
+	margin-top: 76px;
+	background: url(images/hotel-1345074.jpg);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-attachment: fixed;
+	min-height: 460px;
+
+}
 
 
 
