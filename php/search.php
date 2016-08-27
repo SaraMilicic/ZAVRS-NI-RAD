@@ -14,26 +14,75 @@
 <body>
 	<!-- Header and navigation -->
     <header>
-        <!-- <div class="container-fluid intro-search"> -->
-        <div class="container-fluid intro-search">
+        <div class="container-fluid">
             <div class="row header-top">
+                <div class="col-md-12" style="float:right;">
+                    <nav class="navigation">
+                        <ul>
+                            <li><a href="#">HR</a></li>
+                            <li><a href="#">EN</a></li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="col-md-6">
                     <a href="index.html">BookCroatia</a>
                 </div>
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <li><a href="#">Rezervacija</a></li>
-                            <li><a href="#">Prijava</a></li>
-                            <li><a href="#">Registracija</a></li>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
+                        <?php
+                            
+                            if(isset($_SESSION["username"])) {
+                            echo "Dobrodošli, " . $_SESSION['username'];
+                            echo '<li><a href="search.php">Rezervacija</a></li>
+                            
+                            <li><a href="#">Moja rezervacija</a></li>
+                            
+                            <li><a href="logout.php">Odjava</a>';
+
+                            }
+                            else {
+                            
+                            #echo '<li><a href="search.php">Rezervacija</a></li>
+                            #<li><a href="#" onclick="show(\"login_form\")">Prijava</a></li>
+                            #<li><a href="#">Registracija</a></li>
+                            #';
+                            
+                            echo "<li><a href='search.php'>Rezervacija</a></li>
+                            <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                            <li><a href='#'>Registracija</a></li>
+                            ";
+                            }
+                        ?>
+    
+                            
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
+
+    
+
+  <section class="fluid-container intro" >
+        <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
+            <div class="intro-tekst">
+            <form class = "form-signin" role="form" 
+             method = "post">
+            <h3>Prijava</h3><br>
+            <input type = "text" class = "form-control" 
+               name = "username" placeholder = "username" 
+               required autofocus></br>
+            <input type = "password" class = "form-control"
+               name = "password" placeholder = "password" required><br>
+            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
+               name = "login">Login</button>
+
+         </form>
+     </div>
+        </div>
+    </section>
 
     <!-- Search form -->
     <div class="util-container">

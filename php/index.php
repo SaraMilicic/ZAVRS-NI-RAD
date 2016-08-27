@@ -93,16 +93,16 @@
     
 
   <section class="fluid-container intro" >
-        <div class="col-md-4 col-md-offset-8" id="login_form" style="display:none;" style="background-color:transparent">
+        <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-tekst">
             <form class = "form-signin" role="form" 
              method = "post">
-            <h3>Prijava</h3>
+            <h3>Prijava</h3><br>
             <input type = "text" class = "form-control" 
-               name = "username" placeholder = "username = tutorialspoint" 
+               name = "username" placeholder = "username" 
                required autofocus></br>
             <input type = "password" class = "form-control"
-               name = "password" placeholder = "password = 1234" required>
+               name = "password" placeholder = "password" required><br>
             <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
                name = "login">Login</button>
 
@@ -110,7 +110,10 @@
      </div>
         </div>
     </section>
-    <!-- action = "
+    <!-- 
+    btn btn-primary
+
+    action = "
     <?php #echo htmlspecialchars($_SERVER['PHP_SELF']); 
             ?>" -->
     <!-- <div class="fluid-container" id="login_form" style="display:none;">
