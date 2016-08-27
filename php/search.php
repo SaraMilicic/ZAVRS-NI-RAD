@@ -53,7 +53,7 @@
     </header>
 
     <!-- Login form - visible on click for button "Prijava"-->
-    <section class="fluid-container intro" >
+    <section class="fluid-container intro-search" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-tekst">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')" style="float:right;"></i>
