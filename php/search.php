@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +10,6 @@
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../fontello-fb2fbc05/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
-
 </head>
 <body>
 	<!-- Header and navigation -->
@@ -33,9 +34,9 @@
             </div>
         </div>
     </header>
-        
+
     <!-- Search form -->
-   <div class="util-container">
+    <div class="util-container">
         <div class="container">
             <form class="row form-inline" role="form" method="POST" action="search.php">
                 <div class="form-group col-md-4 col-xs-12 main-form-div">
@@ -65,58 +66,45 @@
                 </div>
                 
                 <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <input type="submit" class="btn btn-primary" id="search" value="Pretraga" style="width:100%;">
+                    <input type="submit" class="btn btn-primary" id="search" value="Pretraga"  name="submit" style="width:100%;">
                 </div>
             </form>
         </div>
     </div>
     
+    <?php 
+        if (isset($_POST['submit'])) { 
+            $_SESSION['city-name'] = $_POST['city-name'];
+            $_SESSION['date-arrival'] = $_POST['date-arrival'];
+            $_SESSION['date-departure'] = $_POST['date-departure'];
+            $_SESSION['room-type'] = $_POST['room-type'];
+        } 
+    ?> 
     <div class="container-fluid">
     <h1>Rezultati pretrage</h1>
         <div class="row">
             
-
-
-
-
-
-
-
-
-
         <?php
-
-
-        
-
-        
 
         require_once 'idiorm.php';
         ORM::configure('mysql:host=localhost:8889;dbname=Booking;charset=utf8');
         ORM::configure('username','root');
         ORM::configure('password','root');
 
-
-        
-
         if (isset($_POST['city-name']) && isset($_POST['date-arrival']) && isset($_POST['date-departure']) && isset($_POST['room-type'])) {
-            /* Koliko rezervacija postoji za traženi tip sobe u odabranom gradu*/
-            
-
+     
             $city_name = $_POST['city-name'];
-        $date_arrival = $_POST['date-arrival'];
-        $date_departure = $_POST['date-departure'];
-        //$room_type = $_POST['room-type']     . ' ' . $room_type;
-        //$room_type="Dvokrevetna";
-        $room_type = $_POST['room-type'];
-        $date_arrival_format=date_create("$date_arrival");
-        $date_departure_format=date_create("$date_departure");
+            $date_arrival = $_POST['date-arrival'];
+            $date_departure = $_POST['date-departure'];
+            $room_type = $_POST['room-type'];
+            $date_arrival_format=date_create("$date_arrival");
+            $date_departure_format=date_create("$date_departure");
 
-        echo date_format($date_arrival_format,"d.m.Y.");
-        echo date_format($date_departure_format,"d.m.Y.");
+            //echo date_format($date_arrival_format,"d.m.Y.");
+            //echo date_format($date_departure_format,"d.m.Y.");
 
-        echo '<div class="col-md-12">'.$city_name . ' ' . $date_arrival . ' ' . $date_departure . ' ' . $room_type
-        .'</div>';
+            echo '<div class="col-md-12">'.$city_name . ' ' . date_format($date_arrival_format,"d.m.Y.") . ' ' . date_format($date_departure_format,"d.m.Y.") . ' ' . $room_type
+            .'</div>';
 
 
 
@@ -135,10 +123,23 @@
                 array('name' => $city_name, 'type' => $room_type))->find_many();
 
                 foreach($results as $result):
-                    echo '<h3><a href="#">'.$result->type.'</a></h3>';
-                    echo '<img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>';
-                    echo '<h4 style="float:left;">'.$room_type.'</h4>';
-                    echo '<input type="submit" class="btn btn-primary" value="Rezerviraj" style="float:right;">';
+
+                    echo'<div class="col-md-4"> 
+                        <h3><a href="#">'.$result->type.'</a></h3>
+                        <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
+                        <h4 style="float:left;">'.$room_type.'</h4>
+                        <input type="submit" class="btn btn-primary" value="Rezerviraj" style="float:right;">
+                    </div>';
+
+
+                   /* echo'<div class="col-md-4"> 
+                            <h3><a href="hotel.php">'.$hotel_with_selected_room->name.'</a></h3>
+                            <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
+                            <h3><a href="hotel.php" style="float:left;" >'.$result->type.'</a></h3>
+                            <input type="submit" class="btn btn-primary" value="Rezerviraj" style="float:right;">
+                            <br><h4><a href="hotel.php" style="float:left;">'.$result->price.'</a></h4>
+                            
+                    </div>';*/
                 endforeach;
             }
 
@@ -182,8 +183,10 @@
                 array('id_hotel' => $result->id_hotel, 'city_name' => $city_name))->find_one();
 
                 if($hotel_with_selected_room == null) {
-                    echo '<div class="col-md-12>Žao nam je, rezultati vaše pretrage nisu dali nikakve rezultate. Pokušajte ponovno</div>'
+                    echo '<div class="col-md-12>Žao nam je, rezultati vaše pretrage nisu dali nikakve rezultate. Pokušajte ponovno</div>';
                 }
+                    $_SESSION['id_room'] = $result->id;
+                    $_SESSION['id_hotel'] = $hotel_with_selected_room->id;
                     echo'<div class="col-md-4"> 
                             <h3><a href="hotel.php">'.$hotel_with_selected_room->name.'</a></h3>
                             <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
@@ -196,7 +199,7 @@
             }
         }
         else {
-            echo '<br><div class="col-md-12"><h4>Niste unijeli tražene podatke. Prikazuju se svi hoteli.</h4></div>';
+            echo '<br><div class="col-md-12"><h4>Prikazuju se svi naši hoteli. Za suženu pretragu unesite tražene podatke.</h4></div>';
             $all_hotels = ORM::for_table('hotel')->find_many();
             
 
@@ -206,6 +209,7 @@
                             <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
                             <input type="submit" class="btn btn-primary" value="Više" style="float:right;">
                     </div>';
+
             
             endforeach;
         }
@@ -217,190 +221,14 @@
 
         
     
-   
-
- <!--
-    <div class="container">
-    <h1>Rezultati pretrage</h1>
-        <div class="row">
-            <div class="col-md-6">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-            <div class="col-md-6">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/bulow-palais-534561.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-            
-        </div>
-    </div>
-
-    <div class="container-fluid">
-    <h1>Rezultati pretrage</h1>
-        <div class="row">
-            <div class="col-md-3">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-            <div class="col-md-3">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-            <div class="col-md-3">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-            <div class="col-md-3">
-                <h3><a href="#">Hotel</a></h3>
-                <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                <p>Opis</p>
-            </div>
-        </div>
-    </div>
-    
-    -->
-
-    <!--
-    <div class="container" style="border: 1px solid silver;">
-
-
- 
-        <div class="row">
-            <div class="col-md-12" style="border: 1px solid silver;">
-                <h3><a href="#">Hotel<i class="icon-right-open-big"></i></a></h3>
-                <img src="../images/bulow-palais-534561.jpg" style="width:50%;float:left;" />
-                <p style="width:50%; float:right; text-align:left; padding-left:10px;">
-                Umami actually tumblr +1 fingerstache echo park. Vice authentic cray single-origin coffee, post-ironic squid everyday carry. Butcher gluten-free bespoke, sustainable affogato blog tofu chicharrones heirloom distillery next level forage meditation truffaut mumblecore.
-                </p>
-            </div>
-            
-             
-        </div>
-    </div>
-
-
-        <div style="margin:200px;"></div>
-
-
-    <div class="container-fluid" style="border: 1px solid silver;">
-        <div class="row">
-            <div class="col-md-6" style="border: 1px solid silver;">
-                <h3><a href="#">Hotel<i class="icon-right-open-big"></i></a></h3>
-                <img src="../images/bulow-palais-534561.jpg" style="width:50%;float:left;" />
-                <p style="width:50%; float:right; text-align:left; padding-left:10px;">
-                Umami actually tumblr +1 fingerstache echo park. Vice authentic cray single-origin coffee, post-ironic squid everyday carry. Butcher gluten-free bespoke, sustainable affogato blog tofu chicharrones heirloom distillery next level forage meditation truffaut mumblecore.
-                </p>
-                <input type="submit" class="btn btn-primary" id="reservation" value="Rezerviraj" style="margin-left:10px;">
-            </div>
-            <div class="col-md-6" style="border: 1px solid silver;">
-                <h3><a href="#">Hotel<i class="icon-right-open-big"></i></a></h3>
-                <img src="../images/bulow-palais-534561.jpg" style="width:50%;float:left;" />
-                <p style="width:50%; float:right; text-align:left; padding-left:10px;">
-                Umami actually tumblr +1 fingerstache echo park. Vice authentic cray single-origin coffee, post-ironic squid everyday carry. Butcher gluten-free bespoke, sustainable affogato blog tofu chicharrones heirloom distillery next level forage meditation truffaut mumblecore.
-                </p>
-            </div>
-        </div>
-    </div>
-
-        -->
 
 
  <div style="margin:200px;"></div>
 
-
-    <!-- <div class="container-fluid" style="border: 1px solid silver;">
-
-
-        Col-md-3
-        <div class="row">
-            <div class="col-md-3" style="border: 1px solid silver;">
-                <h3><a href="#">Hotel<i class="icon-right-open-big"></i></a></h3>
-                <img src="../images/bulow-palais-534561.jpg" class="city-image" />
-                
-            </div>
-            
-            <div class="col-md-3" style="border: 1px solid silver;">
-                <p>Umami actually tumblr +1 fingerstache echo park. Vice authentic cray single-origin coffee, post-ironic squid everyday carry. Butcher gluten-free bespoke, sustainable affogato blog tofu chicharrones heirloom distillery next level forage meditation truffaut mumblecore.
-                </p>
-            </div>         
-
-            <div class="col-md-3" style="border: 1px solid silver;">
-                <h3><a href="#">Hotel<i class="icon-right-open-big"></i></a></h3>
-                <img src="../images/hotel-1023473.jpg" class="city-image" />
-                
-            </div>
-
-            <div class="col-md-3" style="border: 1px solid silver;"></div>  
-        </div>
-    </div> -->
-
-
-
-
-
-
-	<!--
-
-	<div class="container-fluid">
-		<div class="row" style="margin-top:60px;">
-            <h2>Razvrstaj po:</h2>
-			<div class="col-md-2" style="border:1px solid gray;">
-				<div>
-					<h3>Cijena:</h3>
-					<input type="checkbox" /> HRK 0 - HRK 370<br>
-					<input type="checkbox" /> HRK 370 - HRK 1100<br>
-					<input type="checkbox" /> HRK 1100 - HRK 1400<br>	
-                    <input type="checkbox" /> HRK 1100 +			
-				</div>
-            </div>
-            <div class="col-md-2" style="border:1px solid gray;">
-				<div>
-					<h3>Kategorija:</h3>
-                    <input type="checkbox" /><i class="icon-star-filled"></i><i class="icon-star-filled"></i><i class="icon-star-filled"></i><i class="icon-star-filled"></i><i class="icon-star-filled"></i><br>
-					<input type="checkbox" /><i class="icon-star-filled"></i><i class="icon-star-filled"></i><i class="icon-star-filled"></i><i class="icon-star-filled"></i><br>
-                    <input type="checkbox" /><i class="icon-star-filled"></i><i class="icon-star-filled"></i></i><br>
-                    <input type="checkbox" /><i class="icon-star-filled"></i></i><br>
-				</div>
-                <button>Razvrstaj</button>
-			</div>
-
-			<div class="col-md-8" style="border:1px solid gray">
-				<h2>Pronađeno:</h2>
-                    
-                    <div class="container-fluid" style="margin-top:-10px;">
-                        <div class="row">
-                            <form method="POST" action="rezervation.php">
-                                <h3>Hotel</h3>
-                                <div class="col-md-4" style="background:url(../images/intro.jpg); min-height:200px;"></div>
-                                <div class="col-md-4">Opis:<br>Dvokrevetna<br>Jednokrevetna</div>
-                                <div class="col-md-4"><input type="submit" value="REZERVIRAJ" /></div>
-                            </form>
-                        </div>
-                    </div>
-
-                    <div class="container-fluid">
-                        <div class="row">
-                            <h3>Hotel</h3>
-                            <div class="col-md-4" style="background:url(../images/intro.jpg); min-height:200px;"></div>
-                            <div class="col-md-4">Opis:<br>Dvokrevetna<br>Jednokrevetna</div>
-                            <div class="col-md-4"><a href="#">REZERVIRAJ</a></div>
-                        </div>
-                    </div>
-            </div>
-			</div>
-		</div>
-	</div>
-
-    -->
-
-    
-
-
+    <?php 
+        echo 'session'. $_SESSION['room-type'];
+    ?>
+   
 	
 	<footer style="background-color: silver; min-height:100px; margin-top:60px;">
         <div class="container-fluid">

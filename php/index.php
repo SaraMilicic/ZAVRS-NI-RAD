@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,8 +23,8 @@
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <li><a href="#">Rezervacija</a></li>
-                            <li><a href="#">Prijava</a></li>
+                            <li><a href="search.php">Rezervacija</a></li>
+                            <li><a href="login.php">Prijava</a></li>
                             <li><a href="#">Registracija</a></li>
                             <li><a href="#">HR</a></li>
                             <li><a href="#">EN</a></li>
@@ -31,6 +34,7 @@
             </div>
         </div>
     </header>
+    
 
     <!-- Search form -->
     <div class="util-container">
@@ -63,12 +67,14 @@
                 </div>
                 
                 <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <input type="submit" class="btn btn-primary" id="search" value="Pretraga" style="width:100%;">
+                    <input type="submit" class="btn btn-primary" id="search" value="Pretraga" name="submit" style="width:100%;">
                 </div>
             </form>
         </div>
     </div>
 
+    
+    
    <div class="container-fluid" style="margin-top:40px;">
         <div class="row">
             <!-- za row:
@@ -79,7 +85,7 @@
         	</div>
             <div class="col-md-3">
                 <img src="../images/zagreb1.jpg" class="city-image"/>
-                <h3><a href="#">Zagreb<i class="icon-right-open-big"></i></a></h3>
+                <h3><a href="hotels-by-city.php">Zagreb<i class="icon-right-open-big"></i></a></h3>
                 
             </div>
             <div class="col-md-3">
