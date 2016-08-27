@@ -4,8 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    
+    <meta charset="utf-8">  
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
@@ -14,11 +13,10 @@
 </head>
 <body>
     <!-- Header and navigation -->
-
     <header>
         <div class="container-fluid">
             <div class="row header-top">
-                <div class="col-md-12" style="float:right;">
+                <div class="col-md-12 col-xs-12" style="float:right;">
                     <nav class="navigation">
                         <ul>
                             <li><a href="#">HR</a></li>
@@ -26,10 +24,10 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <a href="index.html">BookCroatia</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
                         <ul>
                         <?php
@@ -49,91 +47,50 @@
                                             ))
                                             ->find_one();
 
+                                if($result != null) {
+                                    $_SESSION["username"] = $result->username;
+                                    $_SESSION["password"] = $result->password;
+                                    $_SESSION['user'] = $result->id;
+                                } else {
+                                    echo "Invalid Username or Password!";
+                                }
+                            }
 
-                            
-                            if($result != null) {
-                                $_SESSION["username"] = $result->username;
-                                $_SESSION["password"] = $result->password;
-                                $_SESSION['user'] = $result->id;
-                            } else {
-                            echo "Invalid Username or Password!";
-                            }
-                            }
                             if(isset($_SESSION["username"])) {
                             echo "Dobrodošli, " . $_SESSION['username'];
-                            echo '<li><a href="search.php">Rezervacija</a></li>
-                            
-                            <li><a href="#">Moja rezervacija</a></li>
-                            
-                            <li><a href="logout.php">Odjava</a>';
-
+                            echo
+                                '<li><a href="search.php">Rezervacija</a></li>
+                                <li><a href="#">Moja rezervacija</a></li>                            
+                                <li><a href="logout.php">Odjava</a>';
                             }
                             else {
-                            
-                            #echo '<li><a href="search.php">Rezervacija</a></li>
-                            #<li><a href="#" onclick="show(\"login_form\")">Prijava</a></li>
-                            #<li><a href="#">Registracija</a></li>
-                            #';
-                            
                             echo "<li><a href='search.php'>Rezervacija</a></li>
-                            <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                            <li><a href='#'>Registracija</a></li>
-                            ";
+                                <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                                <li><a href='#'>Registracija</a></li>
+                                ";
                             }
-                        ?>
-    
-                            
+                        ?> 
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
-
     
-
-  <section class="fluid-container intro" >
+    <!-- Login form - visible on click for button "Prijava"-->
+    <section class="fluid-container intro" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-tekst">
-            <form class = "form-signin" role="form" 
-             method = "post">
-            <h3>Prijava</h3><br>
-            <input type = "text" class = "form-control" 
-               name = "username" placeholder = "username" 
-               required autofocus></br>
-            <input type = "password" class = "form-control"
-               name = "password" placeholder = "password" required><br>
-            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
-               name = "login">Login</button>
-
-         </form>
-     </div>
+                <form class="form-signin" role="form" method="post">
+                    <h3>Prijava</h3><br>
+                    <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password" placeholder="password" required><br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Login</button>
+                </form>
+            </div>
         </div>
     </section>
-    <!-- 
-    btn btn-primary
-
-    action = "
-    <?php #echo htmlspecialchars($_SERVER['PHP_SELF']); 
-            ?>" -->
-    <!-- <div class="fluid-container" id="login_form" style="display:none;">
-        <div class="col-md-12">
-            <form class = "form-signin" role="form" 
-             method = "post">
-            
-            <input type = "text" class = "form-control" 
-               name = "username" placeholder = "username = tutorialspoint" 
-               required autofocus></br>
-            <input type = "password" class = "form-control"
-               name = "password" placeholder = "password = 1234" required>
-            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
-               name = "login">Login</button>
-         </form>
-        </div>
-    </div> -->
-
     
-
     <!-- Search form -->
     <div class="util-container">
         <div class="container">
@@ -170,30 +127,28 @@
             </form>
         </div>
     </div>
-
     
-    
-   <div class="container-fluid" style="margin-top:40px;">
+    <div class="container-fluid" style="margin-top:40px;">
         <div class="row">
-            <!-- za row:
-             style="margin-bottom:60px; margin-left:60px; margin-right:60px;"
-            -->
         	<div class="col-md-12">
         		<h2 style="margin-bottom:20px;">Otkrijte naše hotele</h2>
         	</div>
+
             <div class="col-md-3">
                 <img src="../images/zagreb1.jpg" class="city-image"/>
-                <h3><a href="hotels-by-city.php">Zagreb<i class="icon-right-open-big"></i></a></h3>
-                
+                <h3><a href="hotels-by-city.php">Zagreb<i class="icon-right-open-big"></i></a></h3> 
             </div>
+
             <div class="col-md-3">
                 <img src="../images/dubrovnik.jpg" class="city-image"/>
                 <h3><a href="#">Dubrovnik<i class="icon-right-open-big"></i></a></h3>
             </div>
+
             <div class="col-md-3">
                 <img src="../images/rovinj1.jpg" class="city-image"/>
                 <h3><a href="#">Rovinj<i class="icon-right-open-big"></i></a></h3>
             </div>
+
             <div class="col-md-3">
                 <img src="../images/osijek.jpg" class="city-image"/>
                 <h3><a href="#">Osijek<i class="icon-right-open-big"></i></a></h3>

@@ -30,32 +30,21 @@
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                        <?php
-                            
-                            if(isset($_SESSION["username"])) {
-                            echo "Dobrodošli, " . $_SESSION['username'];
-                            echo '<li><a href="search.php">Rezervacija</a></li>
-                            
-                            <li><a href="#">Moja rezervacija</a></li>
-                            
-                            <li><a href="logout.php">Odjava</a>';
+                            <?php 
+                                if(isset($_SESSION["username"])) {
+                                    echo "Dobrodošli, " . $_SESSION['username'];
+                                    echo '<li><a href="search.php">Rezervacija</a></li>
+                                    <li><a href="#">Moja rezervacija</a></li>
+                                    <li><a href="logout.php">Odjava</a>';
 
-                            }
-                            else {
-                            
-                            #echo '<li><a href="search.php">Rezervacija</a></li>
-                            #<li><a href="#" onclick="show(\"login_form\")">Prijava</a></li>
-                            #<li><a href="#">Registracija</a></li>
-                            #';
-                            
-                            echo "<li><a href='search.php'>Rezervacija</a></li>
-                            <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                            <li><a href='#'>Registracija</a></li>
-                            ";
-                            }
-                        ?>
-    
-                            
+                                }
+                                else {
+                                    echo "<li><a href='search.php'>Rezervacija</a></li>
+                                    <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                                    <li><a href='#'>Registracija</a></li>
+                                    ";
+                                }
+                            ?>
                         </ul>
                     </nav>
                 </div>
@@ -289,5 +278,14 @@
             </div>
         </div>
     </footer>
+
+    <script>
+      function show(target){
+        document.getElementById(target).style.display = 'block';
+      }
+      function hide(target){
+        document.getElementById(target).style.display = 'none';
+      }
+    </script>
 </body>
 </html>
