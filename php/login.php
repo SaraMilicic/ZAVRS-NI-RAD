@@ -27,7 +27,7 @@
                     <nav class="navigation">
                         <ul>
                             <li><a href="search.php">Rezervacija</a></li>
-                            <li><a href="#">Prijava</a></li>
+                            <li><a href="#" onclick="show('login_form')">Prijava</a></li>
                             <li><a href="#">Registracija</a></li>
                             <li><a href="#">HR</a></li>
                             <li><a href="#">EN</a></li>
@@ -70,7 +70,7 @@
          ?>
       </div> <!-- /container -->
       
-      <div class = "container">
+      <div class = "container" id="login_form">
       
          <form class = "form-signin" role = "form" 
             action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']); 
@@ -101,5 +101,14 @@
             </div>
         </div>
     </footer>
+
+    <script>
+      function show(target){
+        document.getElementById(target).style.display = 'block';
+      }
+      function hide(target){
+        document.getElementById(target).style.display = 'none';
+      }
+    </script>
 </body>
 </html>

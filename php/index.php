@@ -14,26 +14,100 @@
 </head>
 <body>
     <!-- Header and navigation -->
+
     <header>
         <div class="container-fluid intro">
             <div class="row header-top">
+                <div class="col-md-12" style="float:right;">
+                    <nav class="navigation">
+                        <ul>
+                            <li><a href="#">HR</a></li>
+                            <li><a href="#">EN</a></li>
+                        </ul>
+                    </nav>
+                </div>
                 <div class="col-md-6">
                     <a href="index.html">BookCroatia</a>
                 </div>
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <li><a href="search.php">Rezervacija</a></li>
-                            <li><a href="login.php">Prijava</a></li>
-                            <li><a href="#">Registracija</a></li>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
+                        <?php
+                            if(count($_POST)>0) {
+                                require_once 'idiorm.php';
+                                ORM::configure('mysql:host=localhost:8889;dbname=Booking;charset=utf8');
+                                ORM::configure('username','root');
+                                ORM::configure('password','root');
+
+                                $username = $_POST['username'];
+                                $password = $_POST['password'];
+                               
+                                $result = ORM::for_table('user')
+                                            ->where(array(
+                                            'username' => $username,
+                                            'password' => $password
+                                            ))
+                                            ->find_one();
+
+
+                            
+                            if($result != null) {
+                                $_SESSION["username"] = $result->username;
+                                $_SESSION["password"] = $result->password;
+                                $_SESSION['user'] = $result->id;
+                            } else {
+                            echo "Invalid Username or Password!";
+                            }
+                            }
+                            if(isset($_SESSION["username"])) {
+                            echo "Dobrodošli, " . $_SESSION['username'];
+                            echo '<li><a href="search.php">Rezervacija</a></li>
+                            
+                            <li><a href="#">Moja rezervacija</a></li>
+                            
+                            <li><a href="logout.php">Odjava</a>';
+
+                            }
+                            else {
+                            
+                            #echo '<li><a href="search.php">Rezervacija</a></li>
+                            #<li><a href="#" onclick="show(\"login_form\")">Prijava</a></li>
+                            #<li><a href="#">Registracija</a></li>
+                            #';
+                            
+                            echo "<li><a href='search.php'>Rezervacija</a></li>
+                            <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                            <li><a href='#'>Registracija</a></li>
+                            ";
+                            }
+                        ?>
+    
+                            
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
+    <!-- action = "
+    <?php #echo htmlspecialchars($_SERVER['PHP_SELF']); 
+            ?>" -->
+    <div class="fluid-container" id="login_form" style="display:none;">
+        <div class="col-md-12">
+            <form class = "form-signin" role="form" 
+             method = "post">
+            
+            <input type = "text" class = "form-control" 
+               name = "username" placeholder = "username = tutorialspoint" 
+               required autofocus></br>
+            <input type = "password" class = "form-control"
+               name = "password" placeholder = "password = 1234" required>
+            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
+               name = "login">Login</button>
+         </form>
+        </div>
+    </div>
+
     
 
     <!-- Search form -->
@@ -113,5 +187,14 @@
             </div>
         </div>
     </footer>
+
+    <script>
+      function show(target){
+        document.getElementById(target).style.display = 'block';
+      }
+      function hide(target){
+        document.getElementById(target).style.display = 'none';
+      }
+    </script>
 </body>
 </html>
