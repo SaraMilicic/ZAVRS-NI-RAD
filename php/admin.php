@@ -1,6 +1,13 @@
 <?php
     session_start();
     require_once 'db_conn.php';
+    ob_start();
+    if(isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'base_user') {
+        header('Location: index.php');
+    }
+    if(!isset($_SESSION["username"])) {
+        header('Location: index.php');
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,6 +20,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+
   
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script>
@@ -83,72 +91,106 @@
             </div>
         </div>
     <!-- style="display:none;" -->
+        
+        <!-- States -->
         <div class="row">
-            <div class="col-md-12" onclick="show('state')" >
-                <h2 style="background:silver;">Država<i class="icon-right-open-big"></i></h2>
+            <div class="col-md-12" >
+                <h2 >Država</h2>
             <div>
 
-            <div class="col-md-12" id="state" >
-               
-                    <?php
-                        $states = ORM::for_table('state')->find_many();
-                        foreach ($states as $state) {
-                            echo $state->country_code . ' ' . $state->name;
-                        }
-                    ?>
-                    <h3>Dodaj</h3>
-                    <form class="form-inline" role="form" method="POST" action="">
-                        Pozivni broj: <input type="text" /><br><br>
-                        Ime: <input type="text" />
-                        <input class="btn btn-info" type="submit" value="Dodaj">
-
-                    </form>
+            <!-- List of all states -->
+            <div class="col-md-12" onclick="toggle_visibility('state')">
+                <h3 style="background:silver;">Ispis svih država:<i class="icon-right-open-big"></i></h3>
+            </div>
+            <div class="col-md-6 " id="state" style="display:none;">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Pozivni broj</th>
+                            <th>Naziv</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                            <?php
+                                $states = ORM::for_table('state')->find_many();
+                                foreach ($states as $state) {
+                                    echo '<tr>'.
+                                        '<th>'.$state->country_code.'</th><br>'.
+                                        '<th>'.$state->name.'</th><br>'. 
+                                    '</tr>';                             
+                                }
+                            ?>
+                        </tbody>
+                </table>
+            </div>
+            <div class="col-md-6"></div>
+        
+            <!-- Add new state -->
+            <div class="col-md-12">
+                <h3>Dodaj</h3>
+                <form class="form-inline" role="form" method="POST" action="">
+                    Pozivni broj: <input type="text" /><br><br>
+                    Ime: <input type="text" />
+                    <input class="btn btn-info" type="submit" value="Dodaj">
+                </form>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-md-12"  >
+            <div class="col-md-12">
                 <h2>Grad</h2>
             <div>
+            <!-- List of all cities -->
             <div class="col-md-12" onclick="toggle_visibility('city')">
                 <h3 style="background:silver;">Ispis svih gradova:<i class="icon-right-open-big"></i></h3>
             </div>
             <div class="col-md-12" id="city" style="display:none;">
-                    <?php
-                        $cities = ORM::for_table('city')->find_many();
-                        foreach ($cities as $city) {
-                            echo $city->postal_code . '<br>'. 
-                            $city->name . '<br>'. 
-                            $city->about . '<br>'. 
-                            $city->image . '<br>'. 
-                            $city->id_state . '<br>';
-                        }
-                    ?>
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Naziv</th>
+                            <th>Poštanski broj</th>
+                            <th>Opis</th>
+                            <th>Slika</th>
+                            <th>ID države</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                            $cities = ORM::for_table('city')->find_many();
+                            foreach ($cities as $city) {
+                                echo '<tr>'.
+                                    '<th>'.$city->name.'</th><br>'.
+                                    '<th>'.$city->postal_code.'</th><br>'. 
+                                    '<th>'.$city->about.'</th><br>'.
+                                    '<th>'.$city->image.'</th><br>'.
+                                    '<th>'.$city->id_state.'</th><br>'.
+                                '</tr>';                             
+                            }
+                        ?>
+                    </tbody>
+                </table>
             </div>
+
+            <!-- Add new city -->
             <div class="col-md-12">
-                    <h3  style="background:silver;">Dodaj</h3>
-                    <form class="form-inline" role="form" method="POST" action="">
-                        Poštanski broj: <input type="text" /><br><br>
-                        Ime: <input type="text" required="required"/><br><br>
-                        Opis: <input type="text" required="required"/><br><br>
-                        Slika: <input type="text" required="required"/><br><br>
-                        Id države: <input type="text" />
+                <h3  style="background:silver;">Dodaj</h3>
+                <form class="form-inline" role="form" method="POST" action="">
+                    Poštanski broj: <input type="text" /><br><br>
+                    Ime: <input type="text" required="required"/><br><br>
+                    Opis: <input type="text" required="required"/><br><br>
+                    Slika: <input type="text" required="required"/><br><br>
+                    Id države: <input type="text" />
 
-
-
-
-
-                        Država: <select class="form-control" id="state-selection" required="required">
-                            <?php
-                                $states = ORM::for_table('state')->find_many();
+                    Država:
+                    <select class="form-control" id="state-selection" required="required">
+                        <?php
+                            $states = ORM::for_table('state')->find_many();
                                 foreach($states as $state) {
-                                    echo '<option value=' . $state->name . '><option/>';
-                                
-
+                                    echo '<option value=' . $state->name . '><option/>'                            
                                 }
                             ?>
-                       
-                    </select>
+                        </select>
                     </form>
             </div>
 
@@ -208,7 +250,7 @@
 
 
 
-
+            <div class="col-md-12">
             <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                     <tr>
@@ -221,23 +263,24 @@
                     </tr>
                 </thead>
                     <tbody>
-                    <tr>
+                    
                         <?php
                             $hotels = ORM::for_table('hotel')->find_many();
                             foreach ($hotels as $hotel) {
-                                echo 
+                                echo '<tr>'.
                                 '<th>'.$hotel->name.'</th><br>'.
                                 '<th>'.$hotel->address.'</th><br>'. 
                                 '<th>'.$hotel->postal_code.'</th><br>'. 
                                 '<th>'.$hotel->category.'</th><br>'. 
                                 '<th>'.$hotel->about.'</th><br>'. 
-                                '<th>'.$hotel->image.'</th><br>';                             
+                                '<th>'.$hotel->image.'</th><br>'.
+                                '</tr>';                             
                             }
                         ?>
-                    </tr>
-                </tbody>
-                </tfoot>
+                    
+                    </tbody>
             </table>
+        </div>
         </div>
 
 
