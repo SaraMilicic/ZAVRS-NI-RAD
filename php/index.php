@@ -16,7 +16,7 @@
     <!-- Header and navigation -->
 
     <header>
-        <div class="container-fluid intro">
+        <div class="container-fluid">
             <div class="row header-top">
                 <div class="col-md-12" style="float:right;">
                     <nav class="navigation">
@@ -89,10 +89,31 @@
             </div>
         </div>
     </header>
+
+    
+
+  <section class="fluid-container intro" >
+        <div class="col-md-4 col-md-offset-8" id="login_form" style="display:none;" style="background-color:transparent">
+            <div class="intro-tekst">
+            <form class = "form-signin" role="form" 
+             method = "post">
+            <h3>Prijava</h3>
+            <input type = "text" class = "form-control" 
+               name = "username" placeholder = "username = tutorialspoint" 
+               required autofocus></br>
+            <input type = "password" class = "form-control"
+               name = "password" placeholder = "password = 1234" required>
+            <button class = "btn btn-lg btn-primary btn-block" type = "submit" 
+               name = "login">Login</button>
+
+         </form>
+     </div>
+        </div>
+    </section>
     <!-- action = "
     <?php #echo htmlspecialchars($_SERVER['PHP_SELF']); 
             ?>" -->
-    <div class="fluid-container" id="login_form" style="display:none;">
+    <!-- <div class="fluid-container" id="login_form" style="display:none;">
         <div class="col-md-12">
             <form class = "form-signin" role="form" 
              method = "post">
@@ -106,7 +127,7 @@
                name = "login">Login</button>
          </form>
         </div>
-    </div>
+    </div> -->
 
     
 
