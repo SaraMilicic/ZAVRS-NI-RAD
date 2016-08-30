@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../fontello-21cce32f/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
+    
 
   
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -28,6 +28,7 @@
             $('#example').DataTable();
         } );
     </script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 </head>
 <body>
 	<!-- Header and navigation -->
@@ -110,17 +111,17 @@
                             <th>Naziv</th>
                         </tr>
                     </thead>
-                        <tbody>
-                            <?php
-                                $states = ORM::for_table('state')->find_many();
-                                foreach ($states as $state) {
-                                    echo '<tr>'.
-                                        '<th>'.$state->country_code.'</th><br>'.
-                                        '<th>'.$state->name.'</th><br>'. 
-                                    '</tr>';                             
-                                }
-                            ?>
-                        </tbody>
+                    <tbody>
+                        <?php
+                            $states = ORM::for_table('state')->find_many();
+                            foreach ($states as $state) {
+                                echo '<tr>'.
+                                    '<th>'.$state->country_code.'</th><br>'.
+                                    '<th>'.$state->name.'</th><br>'. 
+                                '</tr>';                             
+                            }
+                        ?>
+                    </tbody>
                 </table>
             </div>
             <div class="col-md-6"></div>
@@ -135,7 +136,8 @@
                 </form>
             </div>
         </div>
-
+        
+        <!-- Cities -->
         <div class="row">
             <div class="col-md-12">
                 <h2>Grad</h2>
@@ -174,7 +176,7 @@
 
             <!-- Add new city -->
             <div class="col-md-12">
-                <h3  style="background:silver;">Dodaj</h3>
+                <h3>Dodaj</h3>
                 <form class="form-inline" role="form" method="POST" action="">
                     Poštanski broj: <input type="text" /><br><br>
                     Ime: <input type="text" required="required"/><br><br>
@@ -187,33 +189,55 @@
                         <?php
                             $states = ORM::for_table('state')->find_many();
                                 foreach($states as $state) {
-                                    echo '<option value=' . $state->name . '><option/>'                            
+                                    echo '<option value=' . $state->name . '></option>';                         
                                 }
-                            ?>
-                        </select>
-                    </form>
+                        ?>
+                    </select>
+                </form>
             </div>
 
-            
+             <!-- Hotels -->
             <div class="row">
-            <div class="col-md-12" onclick="show('hotel')" >
-                <h2 style="background:silver;">Hotel<i class="icon-right-open-big"></i></h2>
-            <div>
+                <div class="col-md-12">
+                    <h2>Hotel</h2>
+                <div>
+                <!-- List of all hotels -->
+                <div class="col-md-12" onclick="toggle_visibility('hotel')">
+                    <h3 style="background:silver;">Ispis svih hotela:<i class="icon-right-open-big"></i></h3>
+                </div>
 
-            <div class="col-md-12" id="state" >
-               
-                    <?php
-                        $hotels = ORM::for_table('hotel')->find_many();
-                        foreach ($hotels as $hotel) {
-                            echo $hotel->name . '<br>'. 
-                            $hotel->address . '<br>'. 
-                            $hotel->postal_code . '<br>'. 
-                            $hotel->category . ' zvjezdica ' . '<br>'. 
-                            $hotel->about . '<br>'.
-                            $hotel->image . '<br>';
-                            
-                        }
-                    ?>
+                <div class="col-md-12" id="hotel" style="display:none;">
+                    <table id="example" class="display" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Naziv</th>
+                                <th>Poštanski broj</th>
+                                <th>Opis</th>
+                                <th>Slika</th>
+                                <th>ID države</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                                $cities = ORM::for_table('city')->find_many();
+                                foreach ($cities as $city) {
+                                    echo '<tr>'.
+                                        '<th>'.$city->name.'</th><br>'.
+                                        '<th>'.$city->postal_code.'</th><br>'. 
+                                        '<th>'.$city->about.'</th><br>'.
+                                        '<th>'.$city->image.'</th><br>'.
+                                        '<th>'.$city->id_state.'</th><br>'.
+                                    '</tr>';                             
+                                }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+
+
                     <h3>Dodaj</h3>
                     <form class="form-inline" role="form" method="POST" action="">
                         Pozivni broj: <input type="text" /><br><br>

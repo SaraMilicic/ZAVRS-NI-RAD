@@ -16,10 +16,10 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	background-size: cover;
 	background-attachment: fixed;
 	/*min-height: 460px; */
-	min-height: 600px;
+	min-height: 300px;
 }
 
-.intro-tekst {
+.intro-login {
 	font-size: 1.5em;
 	width: 100%;
 	background-color: rgba(51, 48, 45, 0.9);
@@ -28,12 +28,22 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	overflow: hidden;
 	padding: 20px;
 	margin: 0 auto;
-	min-height: 230px;
-	
+	height: 300px;
 	float:right;
-
 }
+.intro-registration {
+	font-size: 1.5em;
+	width: 100%;
+	background-color: rgba(51, 48, 45, 0.9);
+	opacity: 50%;
+	color: #FFFAF0;
+	overflow: hidden;
+	padding: 20px;
+	margin-top:-300px;
 
+	min-height: 230px;
+	float:left;
+}
 .cancel-icon {
 	margin:0 auto;
 	float:right;
