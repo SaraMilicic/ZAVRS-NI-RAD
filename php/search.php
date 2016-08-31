@@ -134,9 +134,7 @@
         <?php
 
         require_once 'idiorm.php';
-        ORM::configure('mysql:host=localhost:8889;dbname=Booking;charset=utf8');
-        ORM::configure('username','root');
-        ORM::configure('password','root');
+        require_once 'db_conn.php';
 
         if (isset($_POST['city-name']) && isset($_POST['date-arrival']) && isset($_POST['date-departure']) && isset($_POST['room-type'])) {
      

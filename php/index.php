@@ -40,9 +40,7 @@
                         <?php
                             if(count($_POST)>0) {
                                 require_once 'idiorm.php';
-                                ORM::configure('mysql:host=localhost:8889;dbname=Booking;charset=utf8');
-                                ORM::configure('username','root');
-                                ORM::configure('password','root');
+                                require_once 'db_conn.php';
 
                                 $username = $_POST['username'];
                                 $password = $_POST['password'];
@@ -123,11 +121,11 @@
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
             <div class="intro-registration">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
-                <form class="form-registration" role="form" method="">
+                <form class="form-registration" role="form" method="POST" action="registration_confirm.php">
                     <h3>Registracije</h3><br>
-                    <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
-                    <input type="password" class="form-control" name="password" placeholder="password" required><br>
-                    <input type="email" class="form-control" name="email" placeholder="email" required><br>
+                    <input type="text" class="form-control" name="username_reg" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password_reg" placeholder="password" required><br>
+                    <input type="email" class="form-control" name="email_reg" placeholder="email" required><br>
                     <button class="btn btn-lg btn-primary btn-block" type="submit" name="registration">Registracija</button>
                 </form>
             </div>
