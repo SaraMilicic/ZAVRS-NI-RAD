@@ -15,7 +15,7 @@
         <div class="container-fluid hotels-by-city-intro">
             <div class="row header-top">
                 <div class="col-md-6">
-                    <a href="index.php">BookCroatia</a>
+                    <a href="index.php" class="logo">BookCroatia</a>
                 </div>
                 <div class="col-md-6">
                     <nav class="navigation">

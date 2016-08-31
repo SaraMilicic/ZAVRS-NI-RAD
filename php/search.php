@@ -25,7 +25,7 @@
                     </nav>
                 </div>
                 <div class="col-md-6">
-                    <a href="index.php">BookCroatia</a>
+                    <a href="index.php" class="logo">BookCroatia</a>
                 </div>
                 <div class="col-md-6">
                     <nav class="navigation">
@@ -40,7 +40,7 @@
                                 else {
                                     echo "<li><a href='search.php'>Rezervacija</a></li>
                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                                    <li><a href='#'>Registracija</a></li>
+                                    <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
                                     ";
                                 }
                             ?>
@@ -54,13 +54,29 @@
     <!-- Login form - visible on click for button "Prijava"-->
     <section class="fluid-container intro-search" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
-            <div class="intro-tekst">
+            <div class="intro-login">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')" style="float:right;"></i>
                 <form class="form-signin" role="form" method="post">
                     <h3>Prijava</h3><br>
                     <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
                     <input type="password" class="form-control" name="password" placeholder="password" required><br>
                     <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Login</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Registration form -->
+    <section class="fluid-container intro-search" >
+        <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
+            <div class="intro-registration">
+                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
+                <form class="form-registration" role="form" method="">
+                    <h3>Registracije</h3><br>
+                    <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password" placeholder="password" required><br>
+                    <input type="email" class="form-control" name="email" placeholder="email" required><br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="registration">Registracija</button>
                 </form>
             </div>
         </div>
@@ -111,7 +127,7 @@
             $_SESSION['room-type'] = $_POST['room-type'];
         } 
     ?> 
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:60px;">
     <h1>Rezultati pretrage</h1>
         <div class="row">
             
@@ -159,7 +175,7 @@
 
                 if ($results == null) {
                     echo '<div class="col-md-12"><h4>Žao nam je, trenutno nema slobodnih soba za traženo razdoblje. Ponovite pretragu s drugim podacima.</h4></div>';
-                    echo '<div class="col-md-12"><h4>Prikazuju se svi naši hoteli.</h4></div>';
+                    echo '<div class="col-md-12"><h4>Prikazuju se svi naši hoteli.</h4><br></div>';
                     $all_hotels = ORM::for_table('hotel')->find_many();
                     
                     foreach($all_hotels as $one_hotel):
@@ -206,7 +222,7 @@
 
                 if ($results == null) {
                     echo '<div class="col-md-12"><h4>Žao nam je, trenutno nema slobodnih soba za traženo razdoblje. Ponovite pretragu s drugim podacima.</h4></div>';
-                    echo '<div class="col-md-12"><h4>Prikazuju se svi naši hoteli.</h4></div>';
+                    echo '<div class="col-md-12"><h4>Prikazuju se svi naši hoteli.<br></h4></div>';
                     $all_hotels = ORM::for_table('hotel')->find_many();
                     
                     foreach($all_hotels as $one_hotel):
@@ -228,7 +244,7 @@
 
 
                 if($hotel_with_selected_room == null) {
-                    echo '<div class="col-md-12>Žao nam je, rezultati vaše pretrage nisu dali nikakve rezultate. Pokušajte ponovno</div>';
+                    echo '<div class="col-md-12>Žao nam je, rezultati vaše pretrage nisu dali nikakve rezultate. Pokušajte ponovno<br></div>';
                 }
                     $_SESSION['id_room'] = $result->id;
                     $_SESSION['id_hotel'] = $hotel_with_selected_room->id;
@@ -244,7 +260,7 @@
             }
         }
         else {
-            echo '<br><div class="col-md-12"><h4>Prikazuju se svi naši hoteli. Za suženu pretragu unesite tražene podatke.</h4></div>';
+            echo '<br><div class="col-md-12"><h4>Prikazuju se svi naši hoteli. Za suženu pretragu unesite tražene podatke.<br><br></h4></div>';
             $all_hotels = ORM::for_table('hotel')->find_many();
             
             foreach($all_hotels as $one_hotel):
@@ -260,17 +276,7 @@
         </div>
     </div>
         
-
-        
-    
-
-
- <div style="margin:200px;"></div>
-
-
-   
-	
-	<footer style="background-color: silver; min-height:100px; margin-top:60px;">
+	<footer>
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xs-3 col-md-3"></div>

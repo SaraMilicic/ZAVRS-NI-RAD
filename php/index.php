@@ -31,7 +31,7 @@
                     </nav>
                 </div>
                 <div class="col-md-6 col-xs-12">
-                    <a href="index.php">BookCroatia</a>
+                    <a href="index.php" class="logo">BookCroatia</a>
                 </div>
                 <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
@@ -104,7 +104,7 @@
     </header>
     
     <!-- Login form - visible on click for button "Prijava"-->
-    <section class="fluid-container intro" >
+    <section class="fluid-container intro">
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-login">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')"></i>
@@ -171,10 +171,10 @@
         </div>
     </div>
     
-    <div class="container-fluid" style="margin-top:40px;">
+    <div class="container-fluid" style="margin-top:60px;">
         <div class="row">
         	<div class="col-md-12">
-        		<h2 style="margin-bottom:20px;">Otkrijte naše hotele</h2>
+        		<h2 style="margin-bottom:40px;">Otkrijte naše hotele</h2>
         	</div>
 
             <div class="col-md-3">
