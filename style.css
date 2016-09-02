@@ -47,7 +47,7 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	color: #FFFAF0;
 	overflow: hidden;
 	padding: 20px;
-	margin-top:-300px;
+	margin-top:-260px;
 	min-height: 230px;
 	float:left;
 }

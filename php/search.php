@@ -1,5 +1,6 @@
 <?php
     session_start();
+    ob_start();
 ?>
 <!DOCTYPE html>
 <html>
@@ -30,20 +31,10 @@
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <?php 
-                                if(isset($_SESSION["username"])) {
-                                    echo "Dobrodošli, " . $_SESSION['username'];
-                                    echo '<li><a href="search.php">Rezervacija</a></li>
-                                    <li><a href="#">Moja rezervacija</a></li>
-                                    <li><a href="logout.php">Odjava</a>';
-                                }
-                                else {
-                                    echo "<li><a href='search.php'>Rezervacija</a></li>
-                                    <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                                    <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
-                                    ";
-                                }
-                            ?>
+                            <?php
+                                require_once 'login.php';
+                                ob_end_flush();
+                            ?> 
                         </ul>
                     </nav>
                 </div>
@@ -52,30 +43,30 @@
     </header>
 
     <!-- Login form - visible on click for button "Prijava"-->
-    <section class="fluid-container intro-search" >
+    <section class="fluid-container intro-search">
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-login">
-                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')" style="float:right;"></i>
+                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')"></i>
                 <form class="form-signin" role="form" method="post">
                     <h3>Prijava</h3><br>
                     <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
                     <input type="password" class="form-control" name="password" placeholder="password" required><br>
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Login</button>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Prijava</button>
                 </form>
             </div>
         </div>
     </section>
-    
+
     <!-- Registration form -->
     <section class="fluid-container intro-search" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
             <div class="intro-registration">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
-                <form class="form-registration" role="form" method="">
-                    <h3>Registracije</h3><br>
-                    <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
-                    <input type="password" class="form-control" name="password" placeholder="password" required><br>
-                    <input type="email" class="form-control" name="email" placeholder="email" required><br>
+                <form class="form-registration" role="form" method="POST" action="registration_confirm.php">
+                    <h3>Registracija</h3><br>
+                    <input type="text" class="form-control" name="username_reg" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password_reg" placeholder="password" required><br>
+                    <input type="email" class="form-control" name="email_reg" placeholder="email" required><br>
                     <button class="btn btn-lg btn-primary btn-block" type="submit" name="registration">Registracija</button>
                 </form>
             </div>

@@ -36,12 +36,19 @@
                         
                     }
                     else {
-                        ORM::for_table('user')->find_result_set()
-                        ->set('username',$username)
-                        ->set('password',$password)
-                        ->set('email',$email)
-                        ->set('id_role',2)
-                        ->save();
+                        $user = ORM::for_table('user')->create();
+
+                        $user->username = $username;
+                        $user->password = $password;
+                        $user->email = $email;
+                        $user->id_role = 2;
+
+                        $user->save();
+
+                        echo $user->username . '<br>';
+                        echo $user->password . '<br>';
+                        echo $user->email . '<br>';
+                        
                         echo 'Uspješno ste se registrirali.';
                     }
                     echo '<a href="index.php">Povratak na naslovnicu</a>';
