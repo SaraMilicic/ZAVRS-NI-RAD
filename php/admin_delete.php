@@ -19,25 +19,35 @@
         <div class="row">
             <div class="col-md-12">
                 <?php
-			    			    
-			    #$id = $_SESSION['id'];
-				#$state = ORM::for_table('state')->where('state.id', $id)->find_one();
 
-				if(isset($_GET['id'])) {
-					$state = ORM::for_table('state')->where('state.id', $_GET['id'])->find_one();
+				if(isset($_GET['id_state'])) {
+					$state = ORM::for_table('state')->where('state.id', $_GET['id_state'])->find_one();
 					if($state->is_active == 1) {
 				        $state->is_active=0;
 				        $state->save();
 				        echo 'Redak je uspješno deaktiviran.<br>';                                
 			    	}
-
 				    else if($state->is_active == 0) {
 				        $state->is_active=1;
 				        $state->save();
-				        echo 'Redak je uspješno aktiviran.<br>';  
-				                                 
+				        echo 'Redak je uspješno aktiviran.<br>';                                
 				    }   
 				}
+
+				if(isset($_GET['postal_code'])) {
+					$city = ORM::for_table('city')->where('city.postal_code', $_GET['postal_code'])->find_one();
+					if($city->is_active == 1) {
+				        $city->is_active=0;
+				        $city->save();
+				        echo 'Redak je uspješno deaktiviran.<br>';                                
+			    	}
+				    else if($city->is_active == 0) {
+				        $city->is_active=1;
+				        $city->save();
+				        echo 'Redak je uspješno aktiviran.<br>';                                
+				    }   
+				}
+
 				echo '<a href="admin.php">Povratak na administratorsku stranicu</a>';
 			    
 				?>

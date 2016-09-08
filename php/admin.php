@@ -81,25 +81,6 @@
         </div>
     </header>
 
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
     <div class="container">
         <div class="row">
             <div class="col-md-12"><h1>Uredi</h1></div>
@@ -132,14 +113,12 @@
                             $states = ORM::for_table('state')->find_many();
                             foreach ($states as $state) {
                                 echo 
-                                '<tr>'.'<form class="form" role="form" method="POST" action="admin_delete.php?id='.$state->id.'">'.
+                                '<tr>'.'<form class="form" role="form" method="POST" action="admin_delete.php?id_state='.$state->id.'">'.
                                     '<th>'.$state->country_code.'</th>'.
                                     '<th>'.$state->name.'</th>'.
                                     '<th>'.$state->is_active.'</th>'.
                                     '<th><input class="btn btn-info" type="submit" name="deactivate" value="Deaktiviraj/Aktiviraj" ></th>'.
-                                '</form>'.'</tr>'
-                                ;
-                                                       
+                                '</form>'.'</tr>';      
                             }
                         ?>
                     </tbody>
@@ -148,21 +127,18 @@
             
             <!-- Add new state -->
             <div class="col-md-12">
-                <h3>Dodaj</h3>
+                <h3 style="background:silver;" onclick="toggle_visibility('state_insert')">Dodavanje:<i class="icon-right-open-big"></i></h3>
+            </div>
+
+            <div class="col-md-12" id="state_insert" style="display:none;">
                 <form class="form-inline" role="form" method="POST" action="admin_insert.php">
-                    Pozivni broj: <input type="text" class="form-control" name="country_code"/><br><br>
-                    Ime: <input type="text" class="form-control" name="name"/><br><br>
+                    Pozivni broj: <input type="text" class="form-control" name="country_code" required="required"/><br><br>
+                    Ime: <input type="text" class="form-control" name="name" required="required"/><br><br>
                     <input class="btn btn-info" type="submit" value="Dodaj">
                 </form>
             </div>      
         </div>
 
-
-        
-
-
-
-        
         <!-- City row -->
         <div class="row">
             <div class="col-md-12">
@@ -171,7 +147,7 @@
 
             <!-- List of all cities -->
             <div class="col-md-12" onclick="toggle_visibility('city')">
-                <h3 style="background:silver;">Ispis svih gradova:<i class="icon-right-open-big"></i></h3>
+                <h3 style="background:silver;">Ispis i brisanje:<i class="icon-right-open-big"></i></h3>
             </div>
 
             <div class="col-md-12" id="city" style="display:none;">
@@ -183,42 +159,46 @@
                             <th>Opis</th>
                             <th>Slika</th>
                             <th>ID države</th>
+                            <th>Aktivan</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                             $cities = ORM::for_table('city')->find_many();
                             foreach ($cities as $city) {
-                                echo '<tr>'.
+                                echo '<tr>'.'<form class="form" role="form" method="POST" action="admin_delete.php?postal_code='.$city->postal_code.'">'.
                                     '<th>'.$city->name.'</th>'.
                                     '<th>'.$city->postal_code.'</th>'. 
                                     '<th>'.$city->about.'</th>'.
                                     '<th>'.$city->image.'</th>'.
                                     '<th>'.$city->id_state.'</th>'.
-                                '</tr>';                             
+                                    '<th>'.$city->is_active.'</th>'.
+                                    '<th><input class="btn btn-info" type="submit" name="deactivate" value="Deaktiviraj/Aktiviraj" ></th>'.
+                                '</form>'.'</tr>';                             
                             }
                         ?>
                     </tbody>
                 </table>
             </div>
-        
-
+            
             <div class="col-md-12">
-                <h3>Dodaj</h3>
-                <form class="form-inline" role="form" method="POST" action="">
-                    Poštanski broj: <input type="text" /><br><br>
-                    Ime: <input type="text" required="required"/><br><br>
-                    Opis: <input type="text" required="required"/><br><br>
-                    Slika: <input type="text" required="required"/><br><br>
-                    Id države: <input type="text" /><br><br>
+                <h3 style="background:silver;" onclick="toggle_visibility('city_insert')">Dodavanje:<i class="icon-right-open-big"></i></h3>
+            </div>
+
+            <div class="col-md-4" id="city_insert" style="display:none;">
+                <form class="form-inline" role="form" method="POST" action="admin_insert.php">
+                    Poštanski broj: <input type="text" class="form-control" required="required" name="postal_code"/><br><br>
+                    Ime: <input type="text" class="form-control" required="required" name="name"/><br><br>
+                    Opis: <input type="text" class="form-control" required="required" name="about"/><br><br>
+                    Slika: <input type="text" class="form-control" required="required" name="image"/><br><br>
+                    Id države: <input type="text" class="form-control" name="id_state"/><br><br>
                     <input class="btn btn-info" type="submit" value="Dodaj">
                 </form>
             </div>
-
         </div>
 
         
-
         <!-- Hotel row -->
         <div class="row">
             <div class="col-md-12">
@@ -227,7 +207,7 @@
 
             <!-- List of all hotels -->
             <div class="col-md-12" onclick="toggle_visibility('hotel')">
-                <h3 style="background:silver;">Ispis svih hotela:<i class="icon-right-open-big"></i></h3>
+                <h3 style="background:silver;">Ispis i brisanje:<i class="icon-right-open-big"></i></h3>
             </div>
 
             <div class="col-md-12" id="hotel" style="display:none;">
@@ -235,22 +215,28 @@
                     <thead>
                         <tr>
                             <th>Naziv</th>
-                            <th>Poštanski broj</th>
                             <th>Opis</th>
+                            <th>Kategorija</th>
+                            <th>Adresa</th>
                             <th>Slika</th>
-                            <th>ID države</th>
+                            <th>Poštanski broj</th>
+                            <th>Aktivan</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                            $cities = ORM::for_table('city')->find_many();
-                            foreach ($cities as $city) {
-                                echo '<tr>'.
-                                    '<th>'.$city->name.'</th>'.
-                                    '<th>'.$city->postal_code.'</th>'. 
-                                    '<th>'.$city->about.'</th>'.
-                                    '<th>'.$city->image.'</th>'.
-                                    '<th>'.$city->id_state.'</th>'.
+                            $hotels = ORM::for_table('hotel')->find_many();
+                            foreach ($hotels as $hotel) {
+                                echo '<tr>'.'<form class="form" role="form" method="POST" action="admin_delete.php?id_hotel='.$hotel->id.'">'.
+                                    '<th>'.$hotel->name.'</th>'.
+                                    '<th>'.$hotel->about.'</th>'. 
+                                    '<th>'.$hotel->category.'</th>'.
+                                    '<th>'.$hotel->address.'</th>'.
+                                    '<th>'.$hotel->image.'</th>'.
+                                    '<th>'.$hotel->postal_code.'</th>'.
+                                    '<th>'.$hotel->is_active.'</th>'.
+                                    '<th><input class="btn btn-info" type="submit" name="deactivate" value="Deaktiviraj/Aktiviraj" ></th>'.
                                 '</tr>';                             
                             }
                         ?>
@@ -259,18 +245,24 @@
             </div>
 
             <div class="col-md-12">
-                <h3>Dodaj</h3>
-                <form class="form-inline" role="form" method="POST" action="">
-                    Naziv: <input type="text" /><br><br>
-                    Poštanski broj: <input type="text" /><br><br>
-                    Opis: <input type="text" /><br><br>
-                    Slika: <input type="text" /><br><br>
-                    Id države: <input type="text" /><br><br>
+                <h3 style="background:silver;" onclick="toggle_visibility('hotel_insert')">Dodavanje:<i class="icon-right-open-big"></i></h3>
+            </div>
+
+            <div class="col-md-4" id="hotel_insert" style="display:none;">
+                <form class="form-inline" role="form" method="POST" action="action_insert.php">
+                    Naziv: <input type="text" class="form-control" required="required" name="name"/><br><br>
+                    Opis: <input type="text" class="form-control" required="required" name="about"/><br><br>
+                    Kategorija: <input type="text" class="form-control" required="required" name="category"/><br><br>
+                    Adresa: <input type="text" class="form-control" required="required" name="address"/><br><br>
+                    Slika: <input type="text" class="form-control" required="required" name="image"/><br><br>
+                    Poštanski broj: <input type="text" class="form-control" required="required" name="postal_code"/><br><br>
                     <input class="btn btn-info" type="submit" value="Dodaj">
                 </form>
             </div>
-
         </div>
+
+
+
 
 
     </div>
