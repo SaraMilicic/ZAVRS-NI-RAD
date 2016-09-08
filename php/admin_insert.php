@@ -1,6 +1,7 @@
 <?php
     session_start();
     ob_start();
+    require_once 'db_conn.php';
     /*if(isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'admin_user') {
         header('Location: admin.php');
     }
@@ -22,7 +23,7 @@
         <div class="row">
             <div class="col-md-12">
                 <?php 
-                    require_once 'db_conn.php';
+                    
 
                     #insert new state
                     if(isset($_POST['country_code']) && isset($_POST['name'])) {

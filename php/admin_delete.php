@@ -48,6 +48,20 @@
 				    }   
 				}
 
+				if(isset($_GET['id_hotel'])) {
+					$hotel = ORM::for_table('hotel')->where('hotel.id', $_GET['id_hotel'])->find_one();
+					if($hotel->is_active == 1) {
+				        $hotel->is_active=0;
+				        $hotel->save();
+				        echo 'Redak je uspješno deaktiviran.<br>';                                
+			    	}
+				    else if($hotel->is_active == 0) {
+				        $hotel->is_active=1;
+				        $hotel->save();
+				        echo 'Redak je uspješno aktiviran.<br>';                                
+				    }   
+				}
+
 				echo '<a href="admin.php">Povratak na administratorsku stranicu</a>';
 			    
 				?>
