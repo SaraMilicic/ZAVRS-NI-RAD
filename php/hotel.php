@@ -6,7 +6,7 @@
 	
 	<link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
-    <link rel="stylesheet" href="../fontello-fb2fbc05/css/fontello.css">
+    <link rel="stylesheet" href="../fontello-72ff7850/css/fontello.css">
     <!--script src="../pop_out_form/my_js.js"></script-->
 	<link rel="stylesheet" href="../style.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -107,103 +107,72 @@
 	</div>
 
 
-
 	<div class="container">
-		<h1>Hotel
-					<i class="icon-star-filled"></i>
-					<i class="icon-star-filled"></i>
-					<i class="icon-star-filled"></i>
-					<i class="icon-star-filled"></i>
-				</h1>
-				<h3>Adresa</h3>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec posuere vitae mi vitae gravida. Donec tincidunt lobortis erat, maximus pretium lectus sodales ac. Etiam id tempus orci, a tempor metus. Sed ut vestibulum metus. Nulla eget ligula posuere, rutrum nibh vel, feugiat mauris. Sed venenatis, erat nec eleifend ultrices, odio magna fermentum metus, at semper dolor elit et leo. Nam at lectus aliquet, pulvinar nisl vel, sagittis lacus. Sed tincidunt auctor condimentum. Etiam tincidunt ut mauris ac bibendum.</p>
+		
+		
+	<?php
+            require_once 'idiorm.php';
+            require_once 'db_conn.php';
 
-		<h2 style="align:left;">Popis soba</h2>
-		<div class="row" style="margin-bottom:100px;">
-			<div class="col-md-6">
-				<img src="../images/vadara-1224244.jpg" style="width:100%;">
-			</div>
-			<div class="col-md-6">
-				<p>
-					<b>Informacije o sobi:</b><br>
-					Jednokrevetna soba<br>
-					Free WiFi<br>
-					Cijena: <b>500kn</b>
-				</p>
-				<input type="submit" class="btn btn-primary" value="Rezerviraj sobu" style="float:left;">
-			</div>
-		</div>
-		<div class="row" style="margin-bottom:100px;">
-			<div class="col-md-6">
-				<img src="../images/vadara-1224244.jpg" style="width:100%;">
-			</div>
-			<div class="col-md-6">
-				<p>
-					<b>Informacije o sobi:</b><br>
-					Jednokrevetna soba<br>
-					Free WiFi<br>
-					Cijena: <b>500kn</b>
-				</p>
-				<input type="submit" class="btn btn-primary" value="Rezerviraj sobu" style="float:left;">
-			</div>
-		</div>
+            if(isset($_GET['hotel-name'])) {
+                $_SESSION['link']=$_GET['hotel-name'];
+                $hotel_name = $_GET['hotel-name'];
+                
 
-		<div class="row" style="margin-bottom:100px;">
-			<div class="col-md-6">
-				<img src="../images/vadara-1224244.jpg" style="width:100%;">
-			</div>
-			<div class="col-md-6">
-				<p>
-					<b>Informacije o sobi:</b><br>
-					Jednokrevetna soba<br>
-					Free WiFi<br>
-					Cijena: <b>500kn</b>
-				</p>
+                $hotel = ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one();
 
+                $number_of_hotels = count(ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one());
 
-				
+                if ($number_of_hotels == 0) {
+                    echo "Za traženi hotel trenutno nema informacija.";
 
+                }
+                else {
 
-				<!--<input type="submit" class="btn btn-primary" value="Rezerviraj sobu" style="float:left;" id="popup" onclick="div_show()">-->
+                    $rooms = ORM::for_table('room')
+                    ->select_many(array('room_type'=>'room.type', 'room_price'=>'room.price', 'room_floor'=>'room.floor',
+                    	'hotel_name'=>'hotel.name', 'hotel_address'=>'hotel.address', 'hotel_category'=>'hotel.category',
+                    	'city_name'=>'city.name'))
+                    ->join('hotel', array('room.id_hotel', '=', 'hotel.id'))
+                    ->join('city', array('hotel.postal_code', '=', 'city.postal_code'))
+                    ->where(array('hotel.name' => $hotel_name))
+                    ->find_many();
 
-				<input type="submit" class="btn btn-primary" value="Rezerviraj sobu" style="float:left;" />
+                    echo '<h1>'.$hotel->name.'</h1>';
+                    for ($i = 0; $i < $hotel->category; $i++) {
+					    echo '<i class="icon-star"></i>';
+					}
+                    echo '<h3>'.$hotel->address.'</h3>';
+                    echo '<h2 style="margin-top:60px;">Popis soba</h2>';
+                    foreach($rooms as $room) {
+                    
 
-			
+                    echo '<div class="row" style="margin-bottom:100px;">
+                    	<div class="col-md-6">
+							<img src="../images/vadara-1224244.jpg" style="width:100%;">
+						</div>
+						<div class="col-md-6">
+							<p>
+								<b>Informacije o sobi:</b><br>
+								'.$room->room_type.' soba<br>
+								'.$room->room_floor.'.kat<br>
+								Cijena: <b>'.$room->room_price.'</b> kn
+							</p>
+						</div>
+						</div>';
+                    }
 
-
-			</div>
-		</div>
+                }
+            } else {
+                echo '<div class="col-md-12">Za traženi hotel trenutno nema informacija.</div>    ';
+            }
+            
+    ?>
 		
 	</div>
-	
-	<!--
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div id="abc">
-			        Popup Div Starts Here 
-			        <div id="popupContact">
-			            Contact Us Form
-			            <form action="#" id="form" method="post" name="form">
-			                <img id="close" src="../images/icon3.png" onclick="div_hide()">
-			                <h2>Registrirajte se za nastavak rezervacije</h2>
-			                <hr>
-			                
-			                <input id="email" name="email" placeholder="Email" type="email" style="width:100%;">
-			                <input id="password" name="password" placeholder="Password" type="password" style="width:100%;">
-			                <textarea id="msg" name="message" placeholder="Message"></textarea>
-			                <a href="javascript:%20check_empty()" id="submit">Registracija</a>
 
-			                <h3>Imate korisnički račun?</h3>
-			                <input type="submit" class="btn btn-primary" value="Prijava"  id="popup" >
-			            </form>
-			        </div>
-			        Popup Div Ends Here
-			    </div>
-			</div>
-		</div>
-	</div>
--->
+
+	
 	
 
 	
