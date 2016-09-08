@@ -1,4 +1,4 @@
-<?php
+ <?php
     session_start();
     ob_start();
 ?>
@@ -31,10 +31,20 @@
                 <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <?php
-                                require_once 'login.php';
-                                ob_end_flush();
-                            ?> 
+                            <?php 
+                                 if(isset($_SESSION["username"])) {
+                                     echo "Dobrodošli, " . $_SESSION['username'];
+                                     echo '<li><a href="search.php">Rezervacija</a></li>
+                                     <li><a href="#">Moja rezervacija</a></li>
+                                     <li><a href="logout.php">Odjava</a>';
+                                 }
+                                 else {
+                                     echo "<li><a href='search.php'>Rezervacija</a></li>
+                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                                     <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
+                                     ";
+                                 }
+                           ?>
                         </ul>
                     </nav>
                 </div>

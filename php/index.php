@@ -109,32 +109,28 @@
             </form>
         </div>
     </div>
-    
+
+
     <div class="container-fluid" style="margin-top:60px;">
         <div class="row">
-        	<div class="col-md-12">
-        		<h2 style="margin-bottom:40px;">Otkrijte naše hotele</h2>
-        	</div>
-
-            <div class="col-md-3">
-                <img src="../images/zagreb1.jpg" class="city-image"/>
-                <h3><a href="hotels-by-city.php">Zagreb<i class="icon-right-open-big"></i></a></h3> 
+            <div class="col-md-12">
+                <h2 style="margin-bottom:40px;">Otkrijte naše hotele</h2>
             </div>
+            <?php
+            require_once 'idiorm.php';
+            require_once 'db_conn.php';
 
-            <div class="col-md-3">
-                <img src="../images/dubrovnik.jpg" class="city-image"/>
-                <h3><a href="#">Dubrovnik<i class="icon-right-open-big"></i></a></h3>
-            </div>
+            $cities = ORM::for_table('city')->find_many();
+            foreach($cities as $city) {
+                
+                echo '<div class="col-md-3">
+                    <img src="../images/rovinj1.jpg" class="city-image"/>
+                    <h3><a href="hotels-by-city.php?city-name='.$city->name.'">'.$city->name.'<i class="icon-right-open-big"></i></a></h3>
 
-            <div class="col-md-3">
-                <img src="../images/rovinj1.jpg" class="city-image"/>
-                <h3><a href="#">Rovinj<i class="icon-right-open-big"></i></a></h3>
-            </div>
-
-            <div class="col-md-3">
-                <img src="../images/osijek.jpg" class="city-image"/>
-                <h3><a href="#">Osijek<i class="icon-right-open-big"></i></a></h3>
-            </div>
+                </div>';
+                
+            }
+            ?>
         </div>
     </div>
 
