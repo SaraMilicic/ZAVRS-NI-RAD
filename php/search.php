@@ -1,4 +1,4 @@
- <?php
+<?php
     session_start();
     ob_start();
 ?>
@@ -145,6 +145,7 @@
             $room_type = $_POST['room-type'];
             $_SESSION['date_arrival'] = $date_arrival;
             $_SESSION['date_departure'] = $date_departure;
+            
 
             $date_arrival_format=date_create("$date_arrival");
             $date_departure_format=date_create("$date_departure");
@@ -164,7 +165,7 @@
             /* Ako za traženi tip sobe ne postoji niti jedna rezervacija, prikaži sve hotele sa traženim tipom soba*/
             if($number_of_reservation_for_selected_room_type == 0) {
                 $results = ORM::for_table('room')->select_many(array('hotel_name'=>'hotel.name',
-                    'room_type'=>'room.type', 'room_price'=>'room.price', 'city_name'=>'city.name'))->
+                    'room_type'=>'room.type', 'room_price'=>'room.price', 'room_id'=>'room.id','city_name'=>'city.name'))->
                 join('hotel',array('room.id_hotel','=','hotel.id'))->
                 join('city',array('city.postal_code','=','hotel.postal_code'))->
                 where(array(
@@ -187,17 +188,19 @@
                     endforeach;
                 }
                 foreach($results as $result):
-                    $_SESSION['id_room'] = $result->id;
-                    $_SESSION['id_hotel'] = $result->id_hotel;
-                    echo'<div class="col-md-4"> 
+
+                    echo'<div class="col-md-4">
+                        Provjeriti echo 
                         <h3><a href="#">'.$result->hotel_name.'</a></h3>
                         <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/><br>
-                        <a class="btn btn-primary" href="reservation.php" style="float:right;">Rezerviraj</a>
+                        <a class="btn btn-primary" href="reservation_step_one.php?room_id='.$result->room_id.'" style="float:right;">Rezerviraj</a>
+                        
                         <h4>'.$result->room_type.' soba</h4>
                         <h4>'.$result->room_price.' kn</h4>
-                        <h4>'.$result->city_name.'</h4>  
+                        <h4>'.$result->city_name.'</h4>
                     </div>';
                 endforeach;
+                #<input class="btn btn-info" type="submit" name="deactivate" value="Rezerviraj" >
             }
 
             /* Ako za traženi tip sobe postoji rezervacija, 

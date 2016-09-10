@@ -5,19 +5,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">  
+    <meta charset="utf-8">
+    
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="../fontello-72ff7850/css/fontello.css">
+    <link rel="stylesheet" href="../fontello-fb2fbc05/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 <body>
     <!-- Header and navigation -->
+        <!-- Header and navigation -->
     <header>
         <div class="container-fluid">
             <div class="row header-top">
-                <div class="col-md-12 col-xs-12" style="float:right;">
+                <div class="col-md-12" style="float:right;">
                     <nav class="navigation">
                         <ul>
                             <li><a href="#">HR</a></li>
@@ -25,16 +27,26 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="col-md-6 col-xs-12">
+                <div class="col-md-6">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
-                <div class="col-md-6 col-xs-12">
+                <div class="col-md-6">
                     <nav class="navigation">
                         <ul>
-                            <?php
-                                require_once 'login.php';
-                                ob_end_flush();
-                            ?> 
+                            <?php 
+                                 if(isset($_SESSION["username"])) {
+                                     echo "Dobrodošli, " . $_SESSION['username'];
+                                     echo '<li><a href="search.php">Rezervacija</a></li>
+                                     <li><a href="#">Moja rezervacija</a></li>
+                                     <li><a href="logout.php">Odjava</a>';
+                                 }
+                                 else {
+                                     echo "<li><a href='search.php'>Rezervacija</a></li>
+                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
+                                     <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
+                                     ";
+                                 }
+                           ?>
                         </ul>
                     </nav>
                 </div>
@@ -42,8 +54,8 @@
         </div>
     </header>
     
-    <!-- Login form - visible on click for button "Prijava"-->
-    <section class="fluid-container intro">
+        <!-- Login form - visible on click for button "Prijava"-->
+    <section class="fluid-container">
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-login">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')"></i>
@@ -58,7 +70,7 @@
     </section>
 
     <!-- Registration form -->
-    <section class="fluid-container intro" >
+    <section class="fluid-container" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
             <div class="intro-registration">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
@@ -72,66 +84,62 @@
             </div>
         </div>
     </section>
-    
-    <!-- Search form -->
-    <div class="util-container">
-        <div class="container">
-            <form class="row form-inline" role="form" method="POST" action="search.php">
-                <div class="form-group col-md-4 col-xs-12 main-form-div">
-                    <input type="text" class="form-control" id="city-list" placeholder="Grad" list="city-name" required="required" style="width:100%;" name="city-name">
-                    <datalist id="city-name">
-                    <option value="Zagreb">
-                    <option value="Dubrovnik">
-                    <option value="Rovinj">
-                    <option value="Osijek">
-                </div>
-
-                <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <input type="date" class="form-control" id="check-in" data-placeholder="Dolazak" required="required" style="width:100%;" name="date-arrival">
-                </div>
-
-                <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <input type="date" class="form-control" id="check-out" data-placeholder="Odlazak" required="required" style="width:100%;" name="date-departure">
-                </div>
-                
-                <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <select class="form-control" id="room-selection" required="required" style="width:100%;" name="room-type">
-                        <option value="" disabled selected>Vrsta sobe</option>
-                        <option value="Jednokrevetna">Jednokrevetna</option>
-                        <option value="Dvokrevetna">Dvokrevetna</option>
-                        <option value="Trokrevetna">Trokrevetna</option>
-                    </select>
-                </div>
-                
-                <div class="form-group col-md-2 col-xs-12 main-form-div">
-                    <input type="submit" class="btn btn-primary" id="search" value="Pretraga" name="submit" style="width:100%;">
-                </div>
-            </form>
-        </div>
-    </div>
 
 
-    <div class="container-fluid" style="margin-top:60px;">
+   <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h2 style="margin-bottom:40px;">Otkrijte naše hotele</h2>
-            </div>
+           
+            
+
             <?php
             require_once 'idiorm.php';
             require_once 'db_conn.php';
 
-            $cities = ORM::for_table('city')->find_many();
-            foreach($cities as $city) {
-                
-                echo '<div class="col-md-3">
-                    <img src="../images/rovinj1.jpg" class="city-image"/>
-                    <h3><a href="hotels-by-city.php?city-name='.$city->name.'">'.$city->name.'<i class="icon-right-open-big"></i></a></h3>
+            
+            if(isset($_COOKIE["selected_room_id"])) {
+                echo $_COOKIE["selected_room_id"];
+                echo $_COOKIE["selected_room_arrival"];
+                echo $_COOKIE["selected_room_departure"];
 
-                </div>';
-                
+                echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_COOKIE["selected_room_id"].'">1. Odabir sobe</a></div>
+                <div class="col-md-4"><a href="reservation_step_two.php">2. Osobni podaci</a></div>
+                <div class="col-md-4"><a href="reservation_step_three.php" class="not-active">3. Potvrda rezervacije</a></div>';
+
             }
+            else {
+                echo 'Ponovite pretragu.';
+            }
+
+
+
             ?>
+            
         </div>
+        
+
+        <?php 
+            if(isset($_COOKIE["selected_room_id"])) {
+                echo '
+                    <div class="row">
+                            <h2>2. Osobni podaci</h2>
+                    </div>
+
+                    <form class="row form" role="form" method="POST" action="reservation_step_three.php">
+                            <div class="form-group col-md-4 col-xs-12 main-form-div">
+                                Ime: <input type="text" class="form-control" data-placeholder="Ime" required="required" name="guest_first_name">
+                                Prezime: <input type="text" class="form-control" data-placeholder="Prezime" required="required" name="guest_last_name">
+                                Broj putovnice: <input type="text" class="form-control" data-placeholder="Broj putovnice" required="required" name="guest_passport_number">
+                                Broj telefona: <input type="text" class="form-control" data-placeholder="Broj telefona" required="required" name="guest_phone_number">
+                                Email: <input type="text" class="form-control" data-placeholder="Email" required="required" name="guest_email">
+                                <input type="submit" class="btn btn-primary" id="next" value="Nastavi"  name="submit">
+                            </div>
+                            
+                    </form>';
+                }
+                else {
+                echo 'Ponovite pretragu.';
+            }
+        ?>
     </div>
 
     <footer>
@@ -151,12 +159,6 @@
       }
       function hide(target){
         document.getElementById(target).style.display = 'none';
-      }
-      if(document.getElementById("login_form").style.display === 'block') {
-        hide("registration_form");
-      }
-      else if(document.getElementById("registration_form").style.display === 'block') {
-        hide("login_form");
       }
     </script>
 </body>

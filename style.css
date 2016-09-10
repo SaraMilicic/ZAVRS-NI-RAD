@@ -150,3 +150,8 @@ footer {
 	background-attachment: fixed;
 	min-height: 460px;
 }
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+}

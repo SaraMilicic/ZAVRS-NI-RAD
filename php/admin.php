@@ -248,9 +248,9 @@
                 <h3 style="background:silver;" onclick="toggle_visibility('hotel_insert')">Dodavanje:<i class="icon-right-open-big"></i></h3>
             </div>
 
-           
+           <div></div>
 
-            <div class="col-md-4" id="hotel_insert" style="display:none;">
+            <div class="col-md-4">
                 <form class="form-inline" role="form" method="POST" action="admin_insert.php">
                     Naziv: <input type="text" class="form-control" required="required" name="name"/><br><br>
                     Opis: <input type="text" class="form-control" required="required" name="about"/><br><br>
@@ -258,6 +258,19 @@
                     Adresa: <input type="text" class="form-control" required="required" name="address"/><br><br>
                     Slika: <input type="text" class="form-control" required="required" name="image"/><br><br>
                     Poštanski broj: <input type="text" class="form-control" name="postal_code"/><br><br>
+                    <input class="btn btn-info" type="submit" value="Dodaj">
+                </form>
+            </div>
+
+            <div class="col-md-4"id="hotel_insert" style="display:none;">
+                <form class="form-inline" role="form" method="POST" action="admin_insert.php">
+                    Naziv: <input type="text" class="form-control" required="required" name="name"/><br><br>
+                    Opis: <input type="text" class="form-control" required="required" name="about"/><br><br>
+                    Kategorija: <input type="text" class="form-control" required="required" name="category"/><br><br>
+                    Adresa: <input type="text" class="form-control" required="required" name="address"/><br><br>
+                    Slika: <input type="text" class="form-control" required="required" name="image"/><br><br>
+                    Poštanski broj: <input type="text" class="form-control" required="required" name="postal_code"/><br><br>
+
                     <input class="btn btn-info" type="submit" value="Dodaj">
                 </form>
             </div>
