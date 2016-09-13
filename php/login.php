@@ -27,14 +27,12 @@
                             }
                             if (isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'admin_user') {
                                 
-                                echo "Vaša uloga na sustavu: " . $_SESSION["role"];
                                 echo '<li><a href="admin.php">Admin stranica</a></li>';
                                 echo '<li><a href="logout.php">Odjava</a>';
                                 
                             }
                             else if(isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'base_user') {
                             echo "Dobrodošli, " . $_SESSION['username'];
-                            echo "<br>Vaša uloga na sustavu: " . $_SESSION["role"];
                             echo
                                 '<li><a href="search.php">Rezervacija</a></li>
                                 <li><a href="my_reservation.php">Moja rezervacija</a></li>                            
