@@ -97,19 +97,19 @@
 			    <!-- Wrapper for slides -->
 				    <div class="carousel-inner" role="listbox">
 				      <div class="item active">
-				        <img src="../images/vadara-1224244.jpg" alt="Chania" width="460" height="345">
+				        <img src="../images/hotel1.jpg" alt="Hotel" width="460" height="345">
 				      </div>
 
 				      <div class="item">
-				        <img src="../images/vadara-1224244.jpg" alt="Chania" width="460" height="345">
+				        <img src="../images/hotel-dubrovnik.jpg" alt="Hotel" width="460" height="345">
 				      </div>
 				    
 				      <div class="item">
-				        <img src="../images/vadara-1224244.jpg" alt="Flower" width="460" height="345">
+				        <img src="../images/hotel-osijek.jpg" alt="Hotel" width="460" height="345">
 				      </div>
 
 				      <div class="item">
-				        <img src="../images/vadara-1224244.jpg" alt="Flower" width="460" height="345">
+				        <img src="../images/hotel-zagreb.jpg" alt="Hotel" width="460" height="345">
 				      </div>
 				    </div>
 
@@ -148,7 +148,7 @@
 	                $rooms = ORM::for_table('room')
 	                ->select_many(array('room_type'=>'room.type', 'room_price'=>'room.price', 'room_floor'=>'room.floor',
 	                	'hotel_name'=>'hotel.name', 'hotel_address'=>'hotel.address', 'hotel_category'=>'hotel.category',
-	                	'city_name'=>'city.name'))
+	                	'city_name'=>'city.name', 'hotel_image'=>'hotel.image'))
 	                ->join('hotel', array('room.id_hotel', '=', 'hotel.id'))
 	                ->join('city', array('hotel.postal_code', '=', 'city.postal_code'))
 	                ->where(array('hotel.name' => $hotel_name))
@@ -164,9 +164,10 @@
 	                echo '<h2 style="margin-top:60px;">Popis soba</h2>';
 
 	                foreach($rooms as $room) {
+	                $_SESSION['hotel_image'] = $room->hotel_image;
 	                echo '<div class="row" style="margin-bottom:100px;">
 	                	<div class="col-md-6">
-							<img src="../images/vadara-1224244.jpg" style="width:100%;">
+							<img src="../images/'.$room->hotel_image.'" style="width:100%;">
 						</div>
 						<div class="col-md-6">
 							<p>

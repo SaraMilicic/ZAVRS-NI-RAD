@@ -15,38 +15,19 @@
 </head>
 <body>
     <!-- Header and navigation -->
-        <!-- Header and navigation -->
     <header>
         <div class="container-fluid">
-            <div class="row header-top">
-                <div class="col-md-12" style="float:right;">
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-md-6">
+            <div class="row header-top">   
+                <div class="col-md-6 col-xs-12">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
                         <ul>
-                            <?php 
-                                 if(isset($_SESSION["username"])) {
-                                     echo "Dobrodošli, " . $_SESSION['username'];
-                                     echo '<li><a href="search.php">Rezervacija</a></li>
-                                     <li><a href="#">Moja rezervacija</a></li>
-                                     <li><a href="logout.php">Odjava</a>';
-                                 }
-                                 else {
-                                     echo "<li><a href='search.php'>Rezervacija</a></li>
-                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                                     <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
-                                     ";
-                                 }
-                           ?>
+                            <?php
+                                require_once 'login.php';
+                                ob_end_flush();
+                            ?> 
                         </ul>
                     </nav>
                 </div>
@@ -54,7 +35,7 @@
         </div>
     </header>
     
-        <!-- Login form - visible on click for button "Prijava"-->
+    <!-- Login form - visible on click for button "Prijava"-->
     <section class="fluid-container">
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-login">
@@ -88,72 +69,47 @@
 
    <div class="container">
         <div class="row">
-           
-            
-
             <?php
-            require_once 'idiorm.php';
-            require_once 'db_conn.php';
+                require_once 'idiorm.php';
+                require_once 'db_conn.php';
 
-            
+                if(isset($_SESSION['room_id'])) {
+                    echo '<h2>Informacije o rezervaciji</h2>';
+                }
+                else {
+                    'Ponovite pretragu';
+                }
+                
+                if(isset($_SESSION['room_id']) && isset($_SESSION["username"]) 
+                    && isset($_SESSION['date-arrival']) && isset($_SESSION['date-departure'])
+                    && isset($_SESSION['guest_first_name']) && isset($_SESSION['guest_last_name']) 
+                    && isset($_SESSION['guest_passport_number']) && isset($_SESSION['guest_phone_number']) 
+                    && isset($_SESSION['guest_email'])) {
+                    
+                    $guest = ORM::for_table('guest')->create();
 
-            if(isset($_COOKIE["selected_room_id"])) {
+                    $user = ORM::for_table('user')->where('user.username', $_SESSION["username"])->find_one();
 
-                echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_COOKIE["selected_room_id"].'">1. Odabir sobe</a></div>
-                <div class="col-md-4"><a href="reservation_step_two.php">2. Osobni podaci</a></div>
-                <div class="col-md-4"><a href="reservation_step_three.php">3. Potvrda rezervacije</a></div>';
+                    $guest->first_name =  $_SESSION['guest_first_name'];
+                    $guest->last_name =  $_SESSION['guest_last_name'];
+                    $guest->passport_number =  $_SESSION['guest_passport_number'];
+                    $guest->phone_number =  $_SESSION['guest_phone_number'];
+                    $guest->email =  $_SESSION['guest_email'];               
+                    $guest->save();
+                           
+                    $reservation = ORM::for_table('reservation')->create();
+                    $reservation->date_arrival = $_SESSION["date-arrival"];
+                    $reservation->date_departure = $_SESSION["date-departure"];
+                    $reservation->id_room = $_SESSION["room_id"];
+                    $reservation->id_guest = $guest->id;
+                    $reservation->id_user = $user->id;
+                    $reservation->save();
 
-            }
-            else {
-                'Ponovite pretragu';
-            }
-            
-            if(isset($_COOKIE["selected_room_id"]) && isset($_COOKIE["selected_room_arrival"]) && isset($_COOKIE["selected_room_departure"]) && isset($_COOKIE["user"]) && isset($_SESSION['guest_first_name']) && isset($_SESSION['guest_last_name']) && isset($_SESSION['guest_passport_number']) && isset($_SESSION['guest_phone_number']) && isset($_SESSION['guest_email'])) {
-
-
-                /*
-                $_SESSION['guest_first_name'] = $_POST['guest_first_name'];
-                    $_SESSION'guest_last_name'] = $_POST['guest_last_name'];
-                    $_SESSION['guest_passport_number'] = $_POST['guest_passport_number'];
-                    $_SESSION['guest_phone_number'] = $_POST['guest_phone_number'];
-                    $_SESSION['guest_email'] = $_POST['guest_email'];
-                    /*
-                    $_COOKIE["selected_room_id"];
-                    $_COOKIE["selected_room_arrival"];
-                    $_COOKIE["selected_room_departure"];
-                    $_COOKIE["user"];
-                */
-                $guest = ORM::for_table('guest')->create();
-                /*
-                $user->username = $username;
-                        $user->password = $password;
-                        $user->email = $email;
-                        $user->id_role = 2;
-
-                        $user->save();
-                */
-                $user = ORM::for_table('user')->where('user.username', $_COOKIE["user"])->find_one();
-
-                $guest->first_name =  $_SESSION['guest_first_name'];
-                $guest->last_name =  $_SESSION['guest_last_name'];
-                $guest->passport_number =  $_SESSION['guest_passport_number'];
-                $guest->phone_number =  $_SESSION['guest_phone_number'];
-                $guest->email =  $_SESSION['guest_email'];               
-                $guest->id_user =  $user->id;
-                $guest->save();
-                       
-                $reservation = ORM::for_table('reservation')->create();
-                $reservation->date_arrival = $_COOKIE["selected_room_arrival"];
-                $reservation->date_departure = $_COOKIE["selected_room_departure"];
-                $reservation->id_room = $_COOKIE["selected_room_id"];
-                $reservation->id_guest = $guest->id;
-                $reservation->save();
-
-                echo 'Uspješno ste rezervirali željenu sobu. Svoju rezervaciju možete vidjeti na stranici "Moja rezervacija"';
-            }
-            else {
-                echo "Imamo tehničkih problema. Molimo Vas pokušajte kasnije.";
-            }
+                    echo 'Uspješno ste rezervirali željenu sobu. Svoju rezervaciju možete vidjeti na stranici "Moja rezervacija"';
+                }
+                else {
+                    echo "Imamo tehničkih problema. Molimo Vas pokušajte kasnije.";
+                }
 
             ?>
         </div>
@@ -176,6 +132,14 @@
       }
       function hide(target){
         document.getElementById(target).style.display = 'none';
+      }
+      function showLogin() {
+        show("login_form");
+        hide("registration_form");
+      }
+      function showRegistration() {
+        show("registration_form");
+        hide("login_form");
       }
     </script>
 </body>

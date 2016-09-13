@@ -68,9 +68,9 @@
     <!-- Search form -->
     <div class="util-container">
         <div class="container">
-            <form class="row form-inline" role="form" method="POST" action="search.php" style="border:1px solid red;">
-                <div class="form-group col-md-4 col-xs-12 main-form-div" style="border:1px solid red;">
-                    <input type="text" class="form-control" id="city-list" placeholder="Grad" list="city-name" required="required" style="width:100%;border:1px solid red;" name="city-name">
+            <form class="row form-inline" role="form" method="POST" action="search.php">
+                <div class="form-group col-md-4 col-xs-12 main-form-div">
+                    <input type="text" class="form-control" id="city-list" placeholder="Grad" list="city-name" required="required" style="width:100%;" name="city-name">
                     <datalist id="city-name">
                     <option value="Zagreb">
                     <option value="Dubrovnik">
@@ -113,7 +113,7 @@
 
                 $cities = ORM::for_table('city')->where('city.is_active',1)->find_many();
                 foreach($cities as $city) {                 
-                    echo '<div class="col-md-3">
+                    echo '<div class="col-md-3" style="margin-bottom:60px;">
                             <img src="../images/'.$city->image.'" class="city-image"/>
                             <h3><a href="hotels-by-city.php?city-name='.$city->name.'">'.$city->name.'<i class="icon-right-open-big"></i></a></h3>
                         </div>'; 

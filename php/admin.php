@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../fontello-72ff7850/css/fontello.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-
+    
     <!-- DataTable --> 
     <script type="text/javascript" src="../jquery-3.1.0.min.js"></script>
     <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -45,16 +45,8 @@
     <header>
         <div class="container-fluid">
             <div class="row header-top">
-                <div class="col-md-12" style="float:right;">
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
-                        </ul>
-                    </nav>
-                </div>
                 <div class="col-md-6">
-                    <a href="index.php">BookCroatia</a>
+                    <a href="index.php" class="logo">BookCroatia</a>
                 </div>
                 <div class="col-md-6">
                     <nav class="navigation">
@@ -250,17 +242,7 @@
 
            <div></div>
 
-            <div class="col-md-4">
-                <form class="form-inline" role="form" method="POST" action="admin_insert.php">
-                    Naziv: <input type="text" class="form-control" required="required" name="name"/><br><br>
-                    Opis: <input type="text" class="form-control" required="required" name="about"/><br><br>
-                    Kategorija: <input type="text" class="form-control" required="required" name="category"/><br><br>
-                    Adresa: <input type="text" class="form-control" required="required" name="address"/><br><br>
-                    Slika: <input type="text" class="form-control" required="required" name="image"/><br><br>
-                    Poštanski broj: <input type="text" class="form-control" name="postal_code"/><br><br>
-                    <input class="btn btn-info" type="submit" value="Dodaj">
-                </form>
-            </div>
+            
 
             <div class="col-md-4"id="hotel_insert" style="display:none;">
                 <form class="form-inline" role="form" method="POST" action="admin_insert.php">

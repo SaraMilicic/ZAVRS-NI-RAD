@@ -37,7 +37,7 @@
                             echo "<br>Vaša uloga na sustavu: " . $_SESSION["role"];
                             echo
                                 '<li><a href="search.php">Rezervacija</a></li>
-                                <li><a href="#">Moja rezervacija</a></li>                            
+                                <li><a href="my_reservation.php">Moja rezervacija</a></li>                            
                                 <li><a href="logout.php">Odjava</a>';
                             }
                              

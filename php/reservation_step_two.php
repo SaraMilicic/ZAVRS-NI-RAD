@@ -6,7 +6,6 @@
 <html>
 <head>
     <meta charset="utf-8">
-    
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
@@ -15,38 +14,19 @@
 </head>
 <body>
     <!-- Header and navigation -->
-        <!-- Header and navigation -->
     <header>
         <div class="container-fluid">
-            <div class="row header-top">
-                <div class="col-md-12" style="float:right;">
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-md-6">
+            <div class="row header-top">   
+                <div class="col-md-6 col-xs-12">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
                         <ul>
-                            <?php 
-                                 if(isset($_SESSION["username"])) {
-                                     echo "Dobrodošli, " . $_SESSION['username'];
-                                     echo '<li><a href="search.php">Rezervacija</a></li>
-                                     <li><a href="#">Moja rezervacija</a></li>
-                                     <li><a href="logout.php">Odjava</a>';
-                                 }
-                                 else {
-                                     echo "<li><a href='search.php'>Rezervacija</a></li>
-                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                                     <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
-                                     ";
-                                 }
-                           ?>
+                            <?php
+                                require_once 'login.php';
+                                ob_end_flush();
+                            ?> 
                         </ul>
                     </nav>
                 </div>
@@ -72,7 +52,7 @@
     <!-- Registration form -->
     <section class="fluid-container" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
-            <div class="intro-registration">
+            <div class="intro-registration-step">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
                 <form class="form-registration" role="form" method="POST" action="registration_confirm.php">
                     <h3>Registracija</h3><br>
@@ -85,61 +65,34 @@
         </div>
     </section>
 
-
-   <div class="container">
+    <div class="container">
         <div class="row">
-           
-            
-
             <?php
-            require_once 'idiorm.php';
-            require_once 'db_conn.php';
+                require_once 'idiorm.php';
+                require_once 'db_conn.php';
+              
+                if(isset($_SESSION['room_id'])) {
+                    echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_SESSION['room_id'].'"><h2>1. Odabir sobe</h2></a></div>
+                        <div class="col-md-4"><a href="reservation_step_two.php" class="active"><h2>2. Osobni podaci</h2></a></div>
+                        <div class="col-md-4"><a href="reservation_step_three.php" class="not-active"><h2>3. Potvrda rezervacije</h2></a></div>';
 
-            
-            if(isset($_COOKIE["selected_room_id"])) {
-                echo $_COOKIE["selected_room_id"];
-                echo $_COOKIE["selected_room_arrival"];
-                echo $_COOKIE["selected_room_departure"];
-
-                echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_COOKIE["selected_room_id"].'">1. Odabir sobe</a></div>
-                <div class="col-md-4"><a href="reservation_step_two.php">2. Osobni podaci</a></div>
-                <div class="col-md-4"><a href="reservation_step_three.php" class="not-active">3. Potvrda rezervacije</a></div>';
-
-            }
-            else {
-                echo 'Ponovite pretragu.';
-            }
-
-
-
-            ?>
-            
-        </div>
-        
-
-        <?php 
-            if(isset($_COOKIE["selected_room_id"])) {
-                echo '
-                    <div class="row">
-                            <h2>2. Osobni podaci</h2>
-                    </div>
-
-                    <form class="row form" role="form" method="POST" action="reservation_step_three.php">
-                            <div class="form-group col-md-4 col-xs-12 main-form-div">
-                                Ime: <input type="text" class="form-control" data-placeholder="Ime" required="required" name="guest_first_name">
-                                Prezime: <input type="text" class="form-control" data-placeholder="Prezime" required="required" name="guest_last_name">
-                                Broj putovnice: <input type="text" class="form-control" data-placeholder="Broj putovnice" required="required" name="guest_passport_number">
-                                Broj telefona: <input type="text" class="form-control" data-placeholder="Broj telefona" required="required" name="guest_phone_number">
-                                Email: <input type="text" class="form-control" data-placeholder="Email" required="required" name="guest_email">
-                                <input type="submit" class="btn btn-primary" id="next" value="Nastavi"  name="submit">
-                            </div>
-                            
-                    </form>';
+                    echo '<form class="row form" role="form" method="POST" action="reservation_step_three.php">
+                                <div class="form-group col-md-4 col-md-offset-4 col-xs-12 main-form-div">
+                                    Ime: <input type="text" class="form-control" data-placeholder="Ime" required="required" name="guest_first_name">
+                                    Prezime: <input type="text" class="form-control" data-placeholder="Prezime" required="required" name="guest_last_name">
+                                    Broj putovnice: <input type="text" class="form-control" data-placeholder="Broj putovnice" required="required" name="guest_passport_number">
+                                    Broj telefona: <input type="text" class="form-control" data-placeholder="Broj telefona" required="required" name="guest_phone_number">
+                                    Email: <input type="text" class="form-control" data-placeholder="Email" required="required" name="guest_email">
+                                    <input type="submit" class="btn btn-primary" id="next" value="Nastavi" name="submit" style="float:right; margin-top:20px; width:100%;">
+                                </div>
+                                
+                        </form>';                      
                 }
                 else {
-                echo 'Ponovite pretragu.';
-            }
-        ?>
+                    echo 'Ponovite pretragu.';
+                }
+            ?>          
+        </div>            
     </div>
 
     <footer>
@@ -159,6 +112,14 @@
       }
       function hide(target){
         document.getElementById(target).style.display = 'none';
+      }
+      function showLogin() {
+        show("login_form");
+        hide("registration_form");
+      }
+      function showRegistration() {
+        show("registration_form");
+        hide("login_form");
       }
     </script>
 </body>

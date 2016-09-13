@@ -6,7 +6,6 @@
 <html>
 <head>
     <meta charset="utf-8">
-    
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../bootstrap/js/bootstrap.min.js">
     <link rel="stylesheet" href="../style.css">
@@ -15,38 +14,19 @@
 </head>
 <body>
     <!-- Header and navigation -->
-        <!-- Header and navigation -->
     <header>
         <div class="container-fluid">
-            <div class="row header-top">
-                <div class="col-md-12" style="float:right;">
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
-                        </ul>
-                    </nav>
-                </div>
-                <div class="col-md-6">
+            <div class="row header-top">   
+                <div class="col-md-6 col-xs-12">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
                         <ul>
-                            <?php 
-                                 if(isset($_SESSION["username"])) {
-                                     echo "Dobrodošli, " . $_SESSION['username'];
-                                     echo '<li><a href="search.php">Rezervacija</a></li>
-                                     <li><a href="#">Moja rezervacija</a></li>
-                                     <li><a href="logout.php">Odjava</a>';
-                                 }
-                                 else {
-                                     echo "<li><a href='search.php'>Rezervacija</a></li>
-                                     <li><a href='#' onclick='show(\"login_form\")''>Prijava</a></li>
-                                     <li><a href='#' onclick='show(\"registration_form\")''>Registracija</a></li>
-                                     ";
-                                 }
-                           ?>
+                            <?php
+                                require_once 'login.php';
+                                ob_end_flush();
+                            ?> 
                         </ul>
                     </nav>
                 </div>
@@ -54,7 +34,7 @@
         </div>
     </header>
     
-        <!-- Login form - visible on click for button "Prijava"-->
+    <!-- Login form - visible on click for button "Prijava"-->
     <section class="fluid-container">
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
             <div class="intro-login">
@@ -72,7 +52,7 @@
     <!-- Registration form -->
     <section class="fluid-container" >
         <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
-            <div class="intro-registration">
+            <div class="intro-registration-step">
                 <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
                 <form class="form-registration" role="form" method="POST" action="registration_confirm.php">
                     <h3>Registracija</h3><br>
@@ -85,80 +65,54 @@
         </div>
     </section>
 
-
-   <div class="container">
+    <div class="container">
         <div class="row">
-           
-            
-
             <?php
-            require_once 'idiorm.php';
-            require_once 'db_conn.php';
+                require_once 'idiorm.php';
+                require_once 'db_conn.php';
 
-            
-
-            if(isset($_COOKIE["selected_room_id"])) {
-
-                echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_COOKIE["selected_room_id"].'">1. Odabir sobe</a></div>
-                <div class="col-md-4"><a href="reservation_step_two.php">2. Osobni podaci</a></div>
-                <div class="col-md-4"><a href="reservation_step_three.php">3. Potvrda rezervacije</a></div>';
+                if(isset($_SESSION['room_id'])) {
+                    echo '<div class="col-md-4"><a href="reservation_step_one.php?room_id='.$_SESSION['room_id'].'"><h2>1. Odabir sobe</h2></a></div>
+                        <div class="col-md-4"><a href="reservation_step_two.php"><h2>2. Osobni podaci</h2></a></div>
+                        <div class="col-md-4"><a href="reservation_step_three.php" class="active"><h2>3. Potvrda rezervacije</h2></a></div>';                           
+                }
+                else {
+                    'Ponovite pretragu';
+                }
                 
-                echo $_COOKIE["selected_room_id"];
-                echo $_COOKIE["selected_room_arrival"];
-                echo $_COOKIE["selected_room_departure"];
-            }
-            else {
-                'Ponovite pretragu';
-            }
-            
+                if(isset($_POST['guest_first_name']) && isset($_POST['guest_last_name']) && isset($_POST['guest_passport_number']) && isset($_POST['guest_phone_number']) && isset($_POST['guest_email'])) {
+                    $room = ORM::for_table('room')->where('room.id', $_SESSION['room_id'])->find_one();
+                    $hotel = ORM::for_table('hotel')->where('hotel.id', $room->id_hotel)->find_one();
 
-           
-            if(isset($_POST['guest_first_name']) && isset($_POST['guest_last_name']) && isset($_POST['guest_passport_number']) && isset($_POST['guest_phone_number']) && isset($_POST['guest_email'])) {
+                        echo '<div class="col-md-4 col-md-offset-8">
+                            <h3>Rezervacija:</h3>
+                            <p>Hotel: '.$hotel->name.'</p>
+                            Odabrana soba: '.$room->type.'</p>
+                            <p>Kat: '.$room->floor.'</p>
+                            <p>Datum dolaska: '.$_SESSION['date-arrival'].'</p>
+                            <p>Datum odlaska: '.$_SESSION['date-departure'] .'</p>
+                            <p>Cijena noćenja: '.$room->price.'</p>
 
-                echo 'u ifu';
-                echo '<div class="col-md-12"><h2>3. Potvrda rezervacije</h2></div>';
-                $room = ORM::for_table('room')->where('room.id', $_COOKIE["selected_room_id"])->find_one();
-                $hotel = ORM::for_table('hotel')->where('hotel.id', $room->id_hotel)->find_one();
+                            <h3>Odobni podaci</h3>
+                            <p>Ime: '.$_POST['guest_first_name'].'</p>
+                            <p>Prezime: '.$_POST['guest_last_name'].'</p>
+                            <p>Broj putovnice: '.$_POST['guest_passport_number'].'</p>
+                            <p>Broj telefona: '.$_POST['guest_phone_number'].'</p>
+                            <p>Email: '.$_POST['guest_email'].'</p>
 
-                    echo '<div class="col-md-12">
-                        <h3>Rezervacija:</h3>
-                        <p>Hotel: '.$hotel->name.'</p>
-                        Odabrana soba: '.$room->type.'</p>
-                        <p>Kat: '.$room->floor.'</p>
-                        <p>Datum dolaska: '.$_COOKIE['selected_room_arrival'] .'</p>
-                        <p>Datum odlaska: '.$_COOKIE['selected_room_departure'] .'</p>
-                        <p>Cijena noćenja: '.$room->price.'</p>
+                        </div>';
 
-                        <h3>Odobni podaci</h3>
-                        <p>Ime: '.$_POST['guest_first_name'].'</p>
-                        <p>Prezime: '.$_POST['guest_last_name'].'</p>
-                        <p>Broj putovnice: '.$_POST['guest_passport_number'].'</p>
-                        <p>Broj telefona: '.$_POST['guest_phone_number'].'</p>
-                        <p>Email: '.$_POST['guest_email'].'</p>
+                        $_SESSION['guest_first_name'] = $_POST['guest_first_name'];
+                        $_SESSION['guest_last_name'] = $_POST['guest_last_name'];
+                        $_SESSION['guest_passport_number'] = $_POST['guest_passport_number'];
+                        $_SESSION['guest_phone_number'] = $_POST['guest_phone_number'];
+                        $_SESSION['guest_email'] = $_POST['guest_email'];
 
-                    </div>';
-
-                    $_SESSION['guest_first_name'] = $_POST['guest_first_name'];
-                    $_SESSION['guest_last_name'] = $_POST['guest_last_name'];
-                    $_SESSION['guest_passport_number'] = $_POST['guest_passport_number'];
-                    $_SESSION['guest_phone_number'] = $_POST['guest_phone_number'];
-                    $_SESSION['guest_email'] = $_POST['guest_email'];
-                    /*
-                    $_COOKIE["selected_room_id"];
-                    $_COOKIE["selected_room_arrival"];
-                    $_COOKIE["selected_room_departure"];
-                    $_COOKIE["user"];
-
-
-                    */
-                    echo '<a class="btn btn-primary" href="reservation_confirm.php" style="float:right";>Potvrdi rezervaciju</a>';
-
-                
-            }
-            else {
-                echo 'Ponovite pretragu.';
-            }
-
+                        echo '<a class="btn btn-primary" href="reservation_confirm.php" style="float:right";>Potvrdi rezervaciju</a>'; 
+                }
+                else {
+                    echo 'Ponovite pretragu.';
+                }
             ?>
         </div>
     </div>
@@ -180,6 +134,14 @@
       }
       function hide(target){
         document.getElementById(target).style.display = 'none';
+      }
+      function showLogin() {
+        show("login_form");
+        hide("registration_form");
+      }
+      function showRegistration() {
+        show("registration_form");
+        hide("login_form");
       }
     </script>
 </body>

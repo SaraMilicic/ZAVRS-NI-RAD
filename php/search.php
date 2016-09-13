@@ -147,7 +147,7 @@
 
             /* Ako za traženi tip sobe ne postoji niti jedna rezervacija, prikaži sve hotele sa traženim tipom soba*/
             if($number_of_reservation_for_selected_room_type == 0) {
-                $results = ORM::for_table('room')->select_many(array('hotel_name'=>'hotel.name',
+                $results = ORM::for_table('room')->select_many(array('hotel_name'=>'hotel.name', 'hotel_image'=>'hotel.image',
                     'room_type'=>'room.type', 'room_price'=>'room.price', 'room_id'=>'room.id','city_name'=>'city.name'))->
                 join('hotel',array('room.id_hotel','=','hotel.id'))->
                 join('city',array('city.postal_code','=','hotel.postal_code'))->
@@ -165,8 +165,8 @@
                         echo "FOREACH1";
                        
                         echo'<div class="col-md-4"> 
-                            <h3><a href="hotel.php">'.$one_hotel->name.'</a></h3>
-                            <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
+                            <h3><a href="hotel.php?hotel-name='.$one_hotel->name.'">'.$one_hotel->name.'</a></h3>
+                            <img src="../images/'.$one_hotel->image.'" style="width:100%; height:400px;"/>
                             <a class="btn btn-primary" href="hotel.php?hotel-name='.$one_hotel->name.'" style="float:right";>Više</a>
                             </div>';
                     endforeach;
@@ -175,7 +175,7 @@
                     foreach($results as $result):
                         echo'<div class="col-md-4">
                             <h3><a href="#">'.$result->hotel_name.'</a></h3>
-                            <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/><br>
+                            <img src="../images/'.$result->hotel_image.'" style="width:100%; height:400px;"/><br>
                             <a class="btn btn-primary" href="reservation_step_one.php?room_id='.$result->room_id.'" style="float:right;">Rezerviraj</a>                     
                             <h4>'.$result->room_type.' soba</h4>
                             <h4>'.$result->room_price.' kn</h4>
@@ -226,8 +226,8 @@
                     
                     foreach($all_hotels as $one_hotel):
                         echo'<div class="col-md-4">
-                            <h3><a href="hotel.php">'.$one_hotel->name.'</a></h3>
-                            <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
+                            <h3><a href="hotel.php?hotel-name='.$one_hotel->name.'">'.$one_hotel->name.'</a></h3>
+                            <img src="../images/'.$one_hotel->image.'" style="width:100%; height:400px;"/>
                             <a class="btn btn-primary" href="hotel.php?hotel-name='.$one_hotel->name.'" style="float:right";>Više</a>
                             </div>';
                     endforeach;
@@ -246,7 +246,7 @@
                         else {
                             echo'<div class="col-md-4"> 
                                     <h3><a href="hotel.php">'.$hotel_with_selected_room->name.'</a></h3>
-                                    <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
+                                    <img src="../images/'.$hotel_with_selected_room->image.'" style="width:100%; height:400px;"/>
                                     <a class="btn btn-primary" href="reservation_step_one.php?room_id='.$result->room_id.'" style="float:right;">Rezerviraj</a>
                                     <h4>'.$result->type.' soba</h4>
                                     <h4>'.$result->price.' kn</h4>
@@ -263,9 +263,9 @@
             
             foreach($all_hotels as $one_hotel):
                 echo'<div class="col-md-4"> 
-                            <h3><a href="hotel.php">'.$one_hotel->name.'</a></h3>
-                            <img src="../images/accommdation-992296.jpg" style="width:100%; height:400px;"/>
-                            <input type="submit" class="btn btn-primary" value="Više" style="float:right;">
+                            <h3><a href="hotel.php?hotel-name='.$one_hotel->name.'">'.$one_hotel->name.'</a></h3>
+                            <img src="../images/'.$one_hotel->image.'" style="width:100%; height:400px;"/>
+                            <a class="btn btn-primary" href="hotel.php?hotel-name='.$one_hotel->name.'" style="float:right";>Više</a>
                     </div>';
             endforeach;
         }

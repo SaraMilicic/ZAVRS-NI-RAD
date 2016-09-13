@@ -65,12 +65,26 @@
         </div>
     </section>
     
-    <img src="../images/zagreb1.jpg" style="margin:0 auto;" class="img-responsive" alt="Responsive image">
+    <?php
+        require_once 'idiorm.php';
+        require_once 'db_conn.php';
+
+        if(isset($_GET['city-name'])) {
+            $_SESSION['link']=$_GET['city-name'];
+            $city_name = $_GET['city-name'];
+
+            $city = ORM::for_table('city')
+            ->where(array(
+                'city.name' => $city_name,
+                'city.is_active' => 1))
+            ->find_one();
+
+        echo '<img src="../images/'.$city->image.'" style="margin:0 auto;" class="img-responsive" alt="Responsive image">';
+        }
+    ?>
+    
     <div class="container" style="margin-top:40px;">
         <form class="row form-inline" role="form" method="POST" action="hotel.php">
-            <!-- za row:
-             style="margin-bottom:60px; margin-left:60px; margin-right:60px;"
-            -->
 
             <?php
             require_once 'idiorm.php';
@@ -112,7 +126,7 @@
                     foreach($hotels as $hotel) {
                     echo '<div class="col-md-4">
                             <h3><a href="hotel.php?hotel-name='.$hotel->hotel_name.'">'.$hotel->hotel_name.'<i class="icon-right-open-big"></i></a></h3>
-                            <img src="../images/zagreb1.jpg" class="city-image"/>
+                            <img src="../images/'.$city->image.'" class="city-image"/>
                             <a class="btn btn-primary" href="hotel.php?hotel-name='.$hotel->hotel_name.'" style="float:right";>Više</a>                      
                         </div>';
                     }
