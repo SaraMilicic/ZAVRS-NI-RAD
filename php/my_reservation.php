@@ -83,33 +83,38 @@
                     where('user.username', $_SESSION['username'])-> 
                     find_many();
 
-                    echo '<div class="col-md-12>
-                        <h1>Moja rezervacija</h1>';
-                        
-                    if($result != null) {
-                        foreach($results as $result) {
-                        echo'<h2>Informacije o smještaju</h2>
+                    echo '<div class="col-md-12">
+                            <h1>Moja rezervacija</h1>
+                            <h2>Informacije o smještaju</h2>
                         </div>';
-                        echo
-                            '<p>'.$result->hotel_name.'</p>'.
-                            '<p>'.$result->room_type.'</p>'.
-                            '<p>'.$result->rsv_date_arrival.'</p>'.
-                            '<p>'.$result->rsv_date_departure.'</p>'.
-                            '<p>'.$result->room_price * (date_diff($result->rsv_date_arrival, $result->rsv_date_departure)->d + 1).'</p>';
-                    }
+                    
+                    foreach($results as $result):
+                        $datetime1 = date_create($result->rsv_date_arrival);
+                        $datetime2 = date_create($result->rsv_date_departure);
+                        $interval = date_diff($datetime1, $datetime2);
 
-                    echo '<div class="col-md-12>
+                    echo '<div class=col-md-12">'.
+                        '<p>'.$result->hotel_name.'</p>'.
+                        '<p>'.$result->room_type.'</p>'.
+                        '<p>'.$result->rsv_date_arrival.'</p>'.
+                        '<p>'.$result->rsv_date_departure.'</p>'.
+                        '<p>'.$result->room_price * ($interval->d + 1).'</p>'.
+                        '</div>';
+                    
+                    endforeach;
+                    echo '<div class="col-md-12">
                         <h2>Informacije o gostima</h2>
                         </div>';
 
-                    foreach($results as $result) {
-                        echo
-                            '<p>'.$result->guest_first_name.'</p>'.
-                            '<p>'.$result->guest_last_name.'</p>'.
-                            '<p>'.$result->guest_passport_number.'</p>';
-                            '<p>'.$result->guest_phone_number.'</p>';              
-                    }
-                    }
+                    foreach($results as $result):
+                        echo '<div class=col-md-12">'.
+                            '<p>Ime: '.$result->guest_first_name.'</p>'.
+                            '<p>Prezime: '.$result->guest_last_name.'</p>'.
+                            '<p>Broj putovnice: '.$result->guest_passport_number.'</p>'.
+                            '<p>Broj telefona: '.$result->guest_phone_number.'</p>'.              
+                            '</div>';
+                    endforeach;
+                    
                 }
             ?>
         </div>
