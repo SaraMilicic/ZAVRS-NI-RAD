@@ -13,7 +13,6 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	font-size:2em;
 	display: inline-block;
   	vertical-align: middle;
-  	margin-top: -15px;
 }
 
 .intro {
@@ -48,6 +47,32 @@ input[type="date"]:focus::before, input[type="date"]:valid::before { display: no
 	overflow: hidden;
 	padding: 20px;
 	margin-top:-260px;
+	min-height: 230px;
+	float:left;
+}
+
+.intro-login-hotel {
+	font-size: 1.5em;
+	width: 100%;
+	background-color: rgba(51, 48, 45, 0.9);
+	opacity: 50%;
+	color: #FFFAF0;
+	overflow: hidden;
+	padding: 20px;
+	margin: 0 auto;
+	height: 300px;
+	float:right;
+}
+
+.intro-registration-hotel {
+	font-size: 1.5em;
+	width: 100%;
+	background-color: rgba(51, 48, 45, 0.9);
+	opacity: 50%;
+	color: #FFFAF0;
+	overflow: hidden;
+	padding: 20px;
+	margin: 0 auto;
 	min-height: 230px;
 	float:left;
 }
@@ -112,7 +137,7 @@ footer {
 /* Search.html */
 
 .intro-search {
-	background: url(images/resort-918952_1920.jpg);
+	background: url(images/hotel-room-1447201_1920.jpg);
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -138,7 +163,7 @@ footer {
 	background-size: cover;
 	background-attachment: fixed;
 	/*min-height: 460px; */
-	min-height: 400px;
+	min-height: 260px;
 }
 
 .intro1 {
@@ -154,4 +179,9 @@ footer {
 .not-active {
    pointer-events: none;
    cursor: default;
+}
+
+p {
+	line-height:1.8;
+	font-size: 1.2em;
 }

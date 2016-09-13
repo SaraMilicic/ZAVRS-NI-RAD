@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    ob_start();
+?>
 <!DOCTYPE>
 <html>
 <head>
@@ -24,44 +28,63 @@
   		}
   	</style>
 
-	
-    
-
 </head>
 
 <body>
-	<!--<div>Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>-->
-	   <header>
+	<header>
         <div class="container-fluid">
-            <div class="row header-top">
-                <div class="col-md-6">
+            <div class="row header-top">   
+                <div class="col-md-6 col-xs-12">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 col-xs-12">
                     <nav class="navigation">
                         <ul>
-                            <li><a href="#">Rezervacija</a></li>
-                            <li><a href="#">Prijava</a></li>
-                            <li><a href="#">Registracija</a></li>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
+                            <?php
+                                require_once 'login.php';
+                                ob_end_flush();
+                            ?> 
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
     </header>
+	
+	<!-- Login form - visible on click for button "Prijava"-->
+    <section class="fluid-container">
+        <div class="col-md-4 col-md-offset-8 col-xs-12" id="login_form" style="display:none;" style="background-color:transparent">
+            <div class="intro-login-hotel">
+                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('login_form')"></i>
+                <form class="form-signin" role="form" method="post">
+                    <h3>Prijava</h3><br>
+                    <input type="text" class="form-control" name="username" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password" placeholder="password" required><br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="login">Prijava</button>
+                </form>
+            </div>
+        </div>
+    </section>
 
-    <!-- Search form -->
+    <!-- Registration form -->
+    <section class="fluid-container" >
+        <div class="col-md-4 col-md-offset-8 col-xs-12" id="registration_form" style="display:none;" style="background-color:transparent">
+            <div class="intro-registration-hotel">
+                <i class="icon-cancel-circled2 cancel-icon" onclick="hide('registration_form')"></i>
+                <form class="form-registration" role="form" method="POST" action="registration_confirm.php">
+                    <h3>Registracija</h3><br>
+                    <input type="text" class="form-control" name="username_reg" placeholder="username" required autofocus></br>
+                    <input type="password" class="form-control" name="password_reg" placeholder="password" required><br>
+                    <input type="email" class="form-control" name="email_reg" placeholder="email" required><br>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="registration">Registracija</button>
+                </form>
+            </div>
+        </div>
+    </section>
     
-
-	<div class="container-fluid">
-        
-	
-	
+	<div class="container-fluid">	
 		<div class="row">
 			<div class="col-md-12">
-
 				<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000" style="width:100%;">
 			    <!-- Indicators -->
 				    <ol class="carousel-indicators">
@@ -100,55 +123,49 @@
 				      <span class="sr-only">Next</span>
 				    </a>
 			 	 </div>
-
 			</div>
 		</div>
-	
 	</div>
 
+	
 
-	<div class="container">
-		
-		
-	<?php
-            require_once 'idiorm.php';
-            require_once 'db_conn.php';
+	<div class="container">	
+		<?php
+	        require_once 'idiorm.php';
+	        require_once 'db_conn.php';
 
-            if(isset($_GET['hotel-name'])) {
-                $_SESSION['link']=$_GET['hotel-name'];
-                $hotel_name = $_GET['hotel-name'];
-                
+	        if(isset($_GET['hotel-name'])) {
+	            $_SESSION['link']=$_GET['hotel-name'];
+	            $hotel_name = $_GET['hotel-name'];
+	            $hotel = ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one();
+	            $number_of_hotels = count(ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one());
 
-                $hotel = ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one();
+	            if ($number_of_hotels == 0) {
+	                echo "Za traženi hotel trenutno nema informacija.";
 
-                $number_of_hotels = count(ORM::for_table('hotel')->where('hotel.name', $hotel_name)->find_one());
+	            }
+	            else {
+	                $rooms = ORM::for_table('room')
+	                ->select_many(array('room_type'=>'room.type', 'room_price'=>'room.price', 'room_floor'=>'room.floor',
+	                	'hotel_name'=>'hotel.name', 'hotel_address'=>'hotel.address', 'hotel_category'=>'hotel.category',
+	                	'city_name'=>'city.name'))
+	                ->join('hotel', array('room.id_hotel', '=', 'hotel.id'))
+	                ->join('city', array('hotel.postal_code', '=', 'city.postal_code'))
+	                ->where(array('hotel.name' => $hotel_name))
+	                ->find_many();
 
-                if ($number_of_hotels == 0) {
-                    echo "Za traženi hotel trenutno nema informacija.";
+	                echo '<h1>'.$hotel->name.'</h1>';
 
-                }
-                else {
-
-                    $rooms = ORM::for_table('room')
-                    ->select_many(array('room_type'=>'room.type', 'room_price'=>'room.price', 'room_floor'=>'room.floor',
-                    	'hotel_name'=>'hotel.name', 'hotel_address'=>'hotel.address', 'hotel_category'=>'hotel.category',
-                    	'city_name'=>'city.name'))
-                    ->join('hotel', array('room.id_hotel', '=', 'hotel.id'))
-                    ->join('city', array('hotel.postal_code', '=', 'city.postal_code'))
-                    ->where(array('hotel.name' => $hotel_name))
-                    ->find_many();
-
-                    echo '<h1>'.$hotel->name.'</h1>';
-                    for ($i = 0; $i < $hotel->category; $i++) {
+	                for ($i = 0; $i < $hotel->category; $i++) {
 					    echo '<i class="icon-star"></i>';
 					}
-                    echo '<h3>'.$hotel->address.'</h3>';
-                    echo '<h2 style="margin-top:60px;">Popis soba</h2>';
-                    foreach($rooms as $room) {
-                    
 
-                    echo '<div class="row" style="margin-bottom:100px;">
-                    	<div class="col-md-6">
+	                echo '<h3>'.$hotel->address.'</h3>';
+	                echo '<h2 style="margin-top:60px;">Popis soba</h2>';
+
+	                foreach($rooms as $room) {
+	                echo '<div class="row" style="margin-bottom:100px;">
+	                	<div class="col-md-6">
 							<img src="../images/vadara-1224244.jpg" style="width:100%;">
 						</div>
 						<div class="col-md-6">
@@ -160,29 +177,13 @@
 							</p>
 						</div>
 						</div>';
-                    }
-
-                }
-            } else {
-                echo '<div class="col-md-12">Za traženi hotel trenutno nema informacija.</div>    ';
-            }
-            
-    ?>
-		
+	                }
+	            }
+	        } else {
+	            echo '<div class="col-md-12">Za traženi hotel trenutno nema informacija.</div>    ';
+	        }        
+	    ?>		
 	</div>
-
-
-	
-	
-
-	
-
-
-
-
-
-
-
 	
 	<footer style="background-color: silver; min-height:100px; margin-top:60px;">
         <div class="container-fluid">
@@ -194,5 +195,22 @@
             </div>
         </div>
     </footer>
+
+     <script>
+      function show(target){
+        document.getElementById(target).style.display = 'block';
+      }
+      function hide(target){
+        document.getElementById(target).style.display = 'none';
+      }
+      function showLogin() {
+        show("login_form");
+        hide("registration_form");
+      }
+      function showRegistration() {
+        show("registration_form");
+        hide("login_form");
+      }
+    </script>
 </body>
 </html>

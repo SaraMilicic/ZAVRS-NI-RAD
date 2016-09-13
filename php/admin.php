@@ -1,13 +1,13 @@
 <?php
     session_start();
     require_once 'db_conn.php';
-    ob_start();
-    if(isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'base_user') {
-        header('Location: index.php');
-    }
-    if(!isset($_SESSION["username"])) {
-        header('Location: index.php');
-    }
+    // ob_start();
+    // if(isset($_SESSION["username"]) && isset($_SESSION["role"]) && $_SESSION["role"] == 'base_user') {
+    //     header('Location: index.php');
+    // }
+    // if(!isset($_SESSION["username"])) {
+    //     header('Location: index.php');
+    // }
 ?>
 
 <!DOCTYPE html>

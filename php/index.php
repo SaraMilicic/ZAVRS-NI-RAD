@@ -16,15 +16,7 @@
     <!-- Header and navigation -->
     <header>
         <div class="container-fluid">
-            <div class="row header-top">
-                <div class="col-md-12 col-xs-12" style="float:right;">
-                    <nav class="navigation">
-                        <ul>
-                            <li><a href="#">HR</a></li>
-                            <li><a href="#">EN</a></li>
-                        </ul>
-                    </nav>
-                </div>
+            <div class="row header-top">   
                 <div class="col-md-6 col-xs-12">
                     <a href="index.php" class="logo">BookCroatia</a>
                 </div>
@@ -76,9 +68,9 @@
     <!-- Search form -->
     <div class="util-container">
         <div class="container">
-            <form class="row form-inline" role="form" method="POST" action="search.php">
-                <div class="form-group col-md-4 col-xs-12 main-form-div">
-                    <input type="text" class="form-control" id="city-list" placeholder="Grad" list="city-name" required="required" style="width:100%;" name="city-name">
+            <form class="row form-inline" role="form" method="POST" action="search.php" style="border:1px solid red;">
+                <div class="form-group col-md-4 col-xs-12 main-form-div" style="border:1px solid red;">
+                    <input type="text" class="form-control" id="city-list" placeholder="Grad" list="city-name" required="required" style="width:100%;border:1px solid red;" name="city-name">
                     <datalist id="city-name">
                     <option value="Zagreb">
                     <option value="Dubrovnik">
@@ -110,26 +102,22 @@
         </div>
     </div>
 
-
     <div class="container-fluid" style="margin-top:60px;">
         <div class="row">
             <div class="col-md-12">
                 <h2 style="margin-bottom:40px;">Otkrijte naše hotele</h2>
             </div>
             <?php
-            require_once 'idiorm.php';
-            require_once 'db_conn.php';
+                require_once 'idiorm.php';
+                require_once 'db_conn.php';
 
-            $cities = ORM::for_table('city')->find_many();
-            foreach($cities as $city) {
-                
-                echo '<div class="col-md-3">
-                    <img src="../images/rovinj1.jpg" class="city-image"/>
-                    <h3><a href="hotels-by-city.php?city-name='.$city->name.'">'.$city->name.'<i class="icon-right-open-big"></i></a></h3>
-
-                </div>';
-                
-            }
+                $cities = ORM::for_table('city')->where('city.is_active',1)->find_many();
+                foreach($cities as $city) {                 
+                    echo '<div class="col-md-3">
+                            <img src="../images/'.$city->image.'" class="city-image"/>
+                            <h3><a href="hotels-by-city.php?city-name='.$city->name.'">'.$city->name.'<i class="icon-right-open-big"></i></a></h3>
+                        </div>'; 
+                }
             ?>
         </div>
     </div>
@@ -152,10 +140,13 @@
       function hide(target){
         document.getElementById(target).style.display = 'none';
       }
-      if(document.getElementById("login_form").style.display === 'block') {
+      function showLogin() {
+        show("login_form");
         hide("registration_form");
       }
-      else if(document.getElementById("registration_form").style.display === 'block') {
+
+      function showRegistration() {
+        show("registration_form");
         hide("login_form");
       }
     </script>
